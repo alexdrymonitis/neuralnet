@@ -1,0 +1,143 @@
+#N canvas 326 132 920 745 10;
+#X obj 485 583 neuralnet;
+#X floatatom 536 607 10 0 0 1 loss - - 0;
+#X floatatom 525 630 10 0 0 1 accuracy - - 0;
+#X floatatom 505 653 8 0 0 1 epoch - - 0;
+#X msg 485 488 destroy;
+#X text 47 109 1) create a network;
+#X text 45 180 2) set activation functions if different that default
+;
+#X msg 47 286 set_loss_function mse;
+#X text 46 263 3) set the loss function;
+#X msg 47 357 set_optimizer adam;
+#X text 46 335 4) set the optimizer;
+#X msg 485 156 validate;
+#X obj 46 514 tgl 15 0 empty stop_toggle empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#N canvas 543 373 588 394 train-XOR 0;
+#X msg 23 160 0 0 0;
+#X msg 73 160 1 0 1;
+#X msg 123 160 0 1 1;
+#X obj 23 120 select 0 1 2 3;
+#X obj 23 96 random 4;
+#X obj 23 20 inlet;
+#X text 158 63 Randomly send either 0 0 \, 1 0 \, 0 1 \, or 1 1 \,
+along with the desired output (label) for each of those cases. When
+training incrementally \, you must send both the training input and
+desired output concatenated together as a single list.;
+#X msg 173 160 1 1 0;
+#X obj 23 304 outlet;
+#X obj 145 239 f;
+#X msg 160 215 0;
+#X obj 145 262 + 1;
+#X obj 145 308 outlet count;
+#X obj 23 46 t f f;
+#X obj 160 191 sel 1;
+#X obj 23 221 t l b;
+#X obj 23 244 list prepend add;
+#X obj 23 267 list trim;
+#X obj 23 71 metro 1;
+#X obj 145 285 t f f f;
+#X obj 236 303 sel 3000;
+#X obj 236 326 s stop_toggle;
+#X connect 0 0 15 0;
+#X connect 1 0 15 0;
+#X connect 2 0 15 0;
+#X connect 3 0 0 0;
+#X connect 3 1 1 0;
+#X connect 3 2 2 0;
+#X connect 3 3 7 0;
+#X connect 4 0 3 0;
+#X connect 5 0 13 0;
+#X connect 7 0 15 0;
+#X connect 9 0 11 0;
+#X connect 10 0 9 1;
+#X connect 11 0 19 0;
+#X connect 13 0 18 0;
+#X connect 13 1 14 0;
+#X connect 14 0 10 0;
+#X connect 15 0 16 0;
+#X connect 15 1 9 0;
+#X connect 16 0 17 0;
+#X connect 17 0 8 0;
+#X connect 18 0 4 0;
+#X connect 19 0 12 0;
+#X connect 19 1 9 1;
+#X connect 19 2 20 0;
+#X connect 20 0 21 0;
+#X restore 46 534 pd train-XOR;
+#X obj 47 154 s xor_example;
+#X obj 47 238 s xor_example;
+#X obj 47 309 s xor_example;
+#X obj 47 380 s xor_example;
+#X obj 48 675 s xor_example;
+#X obj 485 559 r xor_example;
+#X obj 485 179 s xor_example;
+#X obj 485 511 s xor_example;
+#X obj 46 587 s xor_example;
+#X msg 47 202 set_activation_function 0 sigmoid \, set_activation_function
+1 sigmoid;
+#X msg 48 652 train 10;
+#X floatatom 115 556 5 0 0 1 sample_count - - 0;
+#X obj 485 287 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#N canvas 1167 233 340 208 prediction_input 0;
+#X obj 20 20 inlet;
+#X obj 20 50 t b b;
+#X obj 20 75 random 2;
+#X obj 20 99 pack f f, f 11;
+#X obj 83 68 random 2;
+#X obj 20 125 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 1 4 0;
+#X connect 2 0 3 0;
+#X connect 3 0 5 0;
+#X connect 4 0 3 1;
+#X restore 485 307 pd prediction_input;
+#X obj 485 377 s xor_example;
+#X obj 596 371 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 596 389 tgl 15 0 empty predictions neuralnet_predictions 17
+7 0 10 #fcfcfc #000000 #000000 0 1;
+#X obj 485 678 s predictions;
+#X obj 596 348 expr $f1^$f2;
+#X msg 47 131 create 2 3 1 \, binary_logistic_regression;
+#X obj 485 330 t l l;
+#X msg 485 353 predict \$1 \$2;
+#X text 48 412 5) set the number of epochs;
+#X obj 47 460 s xor_example;
+#X msg 47 437 set_epochs 1500;
+#X text 46 618 7) train the model with 10% of the samples kept for
+validating;
+#X text 483 121 8) validate the model (check the number atoms connected
+to its outlets);
+#X text 482 231 9) Generate random input data to test how well the
+net has learned XOR (check the two toggles below), f 35;
+#X text 483 463 10) destroy when done;
+#X text 51 12 This example is copied from the help patch of [pd_fann/fann].
+It is a simple example of the exclusive-or (XOR) function.;
+#X text 45 492 6) Generate training data (will stop at 3000 samples)
+;
+#X connect 0 0 31 0;
+#X connect 0 2 3 0;
+#X connect 0 4 2 0;
+#X connect 0 5 1 0;
+#X connect 4 0 21 0;
+#X connect 7 0 16 0;
+#X connect 9 0 17 0;
+#X connect 11 0 20 0;
+#X connect 12 0 13 0;
+#X connect 13 0 22 0;
+#X connect 13 1 25 0;
+#X connect 19 0 0 0;
+#X connect 23 0 15 0;
+#X connect 24 0 18 0;
+#X connect 26 0 27 0;
+#X connect 27 0 34 0;
+#X connect 32 0 29 0;
+#X connect 33 0 14 0;
+#X connect 34 0 35 0;
+#X connect 34 1 32 0;
+#X connect 35 0 28 0;
+#X connect 38 0 37 0;

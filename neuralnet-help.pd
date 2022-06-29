@@ -1,0 +1,322 @@
+#N canvas 436 72 892 810 10;
+#X obj 33 9 cnv 15 380 120 empty empty empty 20 12 0 14 #c4fcc4 #404040
+0;
+#X text 38 106 Written by Alexandros Drymonitis;
+#N canvas 284 184 660 668 loss_function_messages 0;
+#X msg 44 51 set_loss_function \$1;
+#X text 183 50 Set the loss function of the network. Argument:;
+#X text 183 77 Symbol with name of loss function. Can be either of
+the following:;
+#X text 182 116 "mse": Mean Squared Error;
+#X text 182 136 "mae": Mean Absolute Error;
+#X text 182 156 "cat_x_entropy": Categorical Cross-Entropy;
+#X text 186 200 Defaults to "mse";
+#X msg 44 250 set_weight_reg1 \$1 \$2;
+#X msg 44 350 set_weight_reg2 \$1 \$2;
+#X msg 44 450 set_bias_reg1 \$1 \$2;
+#X msg 44 550 set_bias_reg2 \$1 \$2;
+#X text 193 247 Set the weight regularizer 1 value of a layer (used
+for optimizing loss function). Arguments:;
+#X text 193 283 \$1: layer number;
+#X text 193 301 \$2: weight regularizer 1 (defaults to 0);
+#X text 191 349 Set the weight regularizer 2 value of a layer (used
+for optimizing loss function). Arguments:;
+#X text 193 386 \$1: layer number;
+#X text 193 404 \$2: weight regularizer 2 (defaults to 0);
+#X text 191 449 Set the bias regularizer 1 value of a layer (used for
+optimizing loss function). Arguments:;
+#X text 193 487 \$1: layer number;
+#X text 193 505 \$2: bias regularizer 1 (defaults to 0);
+#X text 191 549 Set the bias regularizer 2 value of a layer (used for
+optimizing loss function). Arguments:;
+#X text 193 591 \$1: layer number;
+#X text 193 609 \$2: bias regularizer 2 (defaults to 0);
+#X text 182 176 "bin_x_entropy": Binary Cross-Entropy;
+#X restore 523 137 pd loss_function_messages;
+#N canvas 385 317 670 544 optimizer_messages 0;
+#X msg 29 34 set_optimizer \$1;
+#X text 144 36 Set the optimizer of the network. Argument:;
+#X text 144 61 \$1: Symbol with optimizer name. It can be either of
+the following:;
+#X text 144 99 "adam": Adam optimizer;
+#X text 144 119 "sgd": SGD optimizer;
+#X text 144 139 "adagrad": Adagrad optimizer;
+#X text 144 159 "rms_prop": RMSprop optimizer;
+#X text 147 186 Defaults to "adam";
+#X msg 38 261 set_learning_rate \$1;
+#X text 171 260 Set the learning rate of the optimizer. Dafaults to
+0.005;
+#X msg 38 291 set_decay \$1;
+#X msg 38 321 set_beta1 \$1;
+#X msg 38 361 set_beta2 \$1;
+#X msg 38 401 set_epsilon \$1;
+#X msg 38 441 set_rho \$1;
+#X text 171 290 Set the decay of the optimizer. Dafaults to 0.001;
+#X msg 38 471 set_momentum \$1;
+#X text 171 470 Set the momentum variable of the SGD optimizer. Dafaults
+to 0.9;
+#X text 171 440 Set the rho variable of the RMSProp optimizer. Dafaults
+to 0.9;
+#X text 171 400 Set the epsilon variable of the optimizer (used by
+all optimizers except from SGD). Dafaults to 1e-07;
+#X text 171 320 Set the beta1 variable of the Adam optimizer. Dafaults
+to 0.9;
+#X text 171 360 Set the beta2 variable of the Adam optimizer. Dafaults
+to 0.999;
+#X restore 523 165 pd optimizer_messages;
+#N canvas 863 449 547 233 saving_and_loading_models_messages 0;
+#X msg 27 24 save \$1;
+#X text 87 24 Save a model. Argument:;
+#X text 87 43 \$1: /path/to/model/name.ann (default file extension
+is .ann);
+#X text 87 113 \$1: /path/to/model/name.ann (default file extension
+is .ann);
+#X msg 27 94 load \$1;
+#X text 87 94 Load a model. Argument:;
+#X restore 523 193 pd saving_and_loading_models_messages;
+#X text 35 173 \$1: number of neurons in input layer;
+#X text 35 189 \$2: number of neurons in first hidden layer (N);
+#X text 35 205 \$3: if this is the last argument it is the nubmer of
+neurons in the output layer \, otherwise it is the number of neurons
+in N+1 hidden layer;
+#X text 35 255 ...;
+#X text 35 283 $<N+2>: number of neurons in the output layer (unless
+there are only three arguments \, in any case \, the last argument
+is sets the output layer);
+#X text 36 151 Arguments (optional):;
+#X text 36 338 E.g. 2 64 64 3 will create a network with two inputs
+\, two hidden layers with 64 neurons each \, and 3 output neurons;
+#X text 36 393 Inlet: various messages (check the subpatches to the
+right);
+#X text 37 427 Outlets:;
+#X text 35 449 1: predictions;
+#X text 35 469 2: not confident predictions (see [pd misc_messages])
+;
+#X text 35 488 3: epoch count (outputs during training);
+#N canvas 429 144 1152 659 training_validating_and_predicting 0;
+#X msg 29 191 train [\$1];
+#X text 107 190 Train the network. Argument (optional):;
+#X text 145 378 Give a prediction based on the input of the arguments.
+Arguments:;
+#X text 147 415 \$1: first input (N);
+#X text 147 432 $<N+1>: N+1 input;
+#X text 150 451 ...;
+#X text 147 477 The number of arguments must be equal to the number
+of inputs of the network (the first argument of the network creation
+message);
+#X msg 612 31 pause_training;
+#X text 707 31 Pauses a training session;
+#X msg 612 61 resume_training;
+#X text 713 61 Resumes a training session;
+#X msg 612 91 abort_training;
+#X text 710 91 Aborts a training session ("resume_training" is ineffective
+after this message);
+#X text 106 210 percentage of the training data set that should be
+used for validating (e.g. if argument is 10 \, then 10% of the training
+data set will be used for validating \, in which case no further data
+should be imported after training and before testing). Note \, if batch
+training \, this percentage value MUST be passed via the "set_batch_size"
+message and not via "train"!;
+#X msg 33 329 validate;
+#X text 94 329 Validate the network;
+#X msg 32 379 predict \$1 ...;
+#X msg 29 31 set_epochs \$1;
+#X text 125 32 Set the number of epochs for training;
+#X msg 29 69 set_batch_size \$1 [\$2];
+#X text 175 66 Set the number of samples in a batch (used when training
+in batches). In case a percentage of the training data should be used
+for validation \, the second argument is that percentage (e.g. 10 for
+10% of the data). Note that this extra argument can be passed through
+the "train" message \, but in case of batch training \, it MUST be
+passed through the "set_batch_size" message!;
+#X msg 612 141 set_train_del \$1;
+#X text 720 141 Set the delay in milliseconds between training epochs
+(used to not freeze Pd while training). Defaults to 25;
+#X msg 608 226 desired_loss \$1;
+#X msg 608 336 desired_accuracy \$1;
+#X msg 608 436 retrain;
+#X msg 608 528 release_mem;
+#X text 692 524 Release the training memory after a training session
+is over \, while the loss or accuracy of the network have not met the
+requirements of "desired_loss" and "desired_accuracy" respectively
+;
+#X text 664 436 Retrains the network when the "desired_loss" or "desired_accuracy"
+messages have been sent (use this and not "train");
+#X text 745 335 Set an accuracy threshold \, where \, if the accuracy
+of the network is below it after training is done \, the training dataset
+memory will not be cleared an freed \, so you can change some parameters
+of the network and retrain it without having to reload the training
+dataset. Defaults to 0;
+#X text 715 225 Set a loss threshold \, where \, if the loss of the
+network is above it after training is done \, the training dataset
+memory will not be cleared an freed \, so you can change some parameters
+of the network and retrain it without having to reload the training
+dataset. Defaults to FLT_MAX (3.40282e+38);
+#X restore 523 81 pd training_validating_and_predicting;
+#N canvas 170 106 1200 707 dataset_messages 0;
+#X text 176 108 ...;
+#X text 174 133 In case training or testing data are set via arrays
+in Pd \, the names of the arrays have to be set with this message.
+The number of arguments must be equal to the first argument in the
+network creation message (the number of inputs of the network);
+#X text 182 264 Similar to the "data_in_arrays" message \, only for
+output training or testing data. This message must be sent after the
+"data_in_arrays" message. The number of arguments must be equal to
+the last argument in the network creation message (the number of output
+neurons of the network);
+#X text 173 27 Set the names of the arrays that hold the input training
+data. Arguments:;
+#X text 127 532 ...;
+#X text 122 473 \$1: first input datum (N);
+#X text 175 63 \$1: first input data array (N);
+#X text 175 83 $<N+1>: second input data array;
+#X text 122 494 $<N+1>: N+1 input datum (in case network has more than
+one inputs);
+#X text 121 560 $<N+2>: first output datum;
+#X text 127 592 ...;
+#X text 123 618 The total number of arguments must equal the number
+of input and output neurons of the network (the first and last argument
+of the network creation message);
+#X text 770 264 Maximum values of the inputs \, used to normalize data
+to a range from 0 to 1 or from -1 to 1 . Arguments:;
+#X text 773 305 \$1: first input datum maximum value (N);
+#X text 773 325 $<N+1>: N+1 input datum maximum value;
+#X text 775 348 ...;
+#X text 776 378 The number of arguments should be equal to the inputs
+of the network (the first argument of the network creation message)
+;
+#X text 779 528 ...;
+#X text 774 444 Maximum values of the outputs \, used to normalize
+data to a range from 0 to 1 or from -1 to 1 . Arguments:;
+#X text 777 485 \$1: first output datum maximum value (N);
+#X text 777 505 $<N+1>: N+1 output datum maximum value;
+#X text 782 558 The number of arguments should be equal to the outputs
+of the network (the last argument of the network creation message)
+;
+#X msg 623 631 shuffle_train_set;
+#X text 740 629 Shuffle the training data set (used for better fitting
+the network);
+#X msg 34 28 data_in_arrays \$1 ...;
+#X msg 34 268 data_out_arrays \$1 ...;
+#X msg 616 265 normalize_input \$1 ...;
+#X msg 616 445 normalize_output \$1 ...;
+#X msg 622 27 add_arrays \$1 \$2;
+#X text 732 152 \$1: Array name for the input layer. The size of the
+array must be equal to the number of input neurons of the network;
+#X text 732 189 \$2: Array name for the output layer. The size of the
+array must be equal to the number of output neurons of the network
+;
+#X text 732 25 This message adds arrays vertically for the input and
+output of the network (meaning \, each element of an array corresponds
+to one neuron in the input or output layer). This is usefull when all
+training or predicting data is loaded to an array in Pd \, for every
+sample separately. Once this message is sent \, every time new data
+is imported \, the message "add" with no arguments must be sent \,
+and [neural_net] will read the data out of these two arrays Arguments:
+;
+#X msg 35 394 add [\$1] ...;
+#X text 123 393 Add training or testing data manually. If arrays are
+added withthe "add_arrays" message (look to the right column in this
+example subpatch) \, then "add" takes no arguments. Otherwise it takes
+at least one argument. Arguments (optional):;
+#X restore 523 53 pd dataset_messages;
+#N canvas 284 184 649 623 layer_messages 0;
+#X text 242 335 "linear": Linear activation function;
+#X text 242 355 "sigmoid": Sigmoid activation function;
+#X text 242 375 "relu": ReLU activation function;
+#X text 242 395 "softmax": Softmax activation function;
+#X text 246 419 Defaults to "sigmoid";
+#X msg 44 241 set_activation_function \$1 \$2;
+#X text 243 296 \$2: Symbol with name of activation function. Can be
+either of the following:;
+#X text 243 240 Set the activation function for a layer. Arguments:
+;
+#X text 244 268 \$1: Layer number \, starting from 0;
+#X msg 39 164 set_weight_coeff \$1;
+#X text 167 160 Set the scale coefficient of the weights for all layers.
+Defaults to 0.1;
+#X msg 39 54 set_dropout \$1 \$2;
+#X text 167 50 Set the dropout rate for the input of a layer. Arguments:
+;
+#X text 170 71 \$1: Layer index (starting from 0 \, cannot be 0 as
+input layer can't use a dropout in its input);
+#X msg 44 490 seed \$1;
+#X text 102 486 Set the seed for the rand() function used to initialize
+the weights of the layers. Internally \, the seed is set on object
+initialization with srand(time(0)) \, but some systems may not have
+a reliable time (e.g. a Raspberry Pi that is not constantly powered)
+\, so "seed" enables setting the random seed externally;
+#X text 170 106 \$2: Dropout rate (e.g. 0.1 means 10% of neuros are
+dropped in each epoch);
+#X restore 523 109 pd layer_messages;
+#N canvas 280 172 1313 678 various_netwrok_messages 0;
+#X text 186 43 create a network. arguements:;
+#X text 186 60 \$1: number of neurons in input layer;
+#X text 186 76 \$2: number of neurons in first hidden layer (N);
+#X text 186 92 \$3: if this is the last argument it is the nubmer of
+neurons in the output layer \, otherwise it is the number of neurons
+in N+1 hidden layer;
+#X text 186 142 ...;
+#X text 186 170 $<N+2>: number of neurons in the output layer (unless
+there are only three arguments \, in any case \, the last argument
+is sets the output layer);
+#X msg 50 490 destroy;
+#X text 105 490 destroy the network;
+#X text 184 228 for example \, the message "create 2 64 64 3" creates
+a network with two inputs \, two hidden layers with 64 neurons each
+\, and three output neurons.;
+#X msg 51 43 create \$1 \$2 \$3 ...;
+#X msg 51 311 classification;
+#X text 151 309 Set the network to classification mode;
+#X msg 51 341 regression;
+#X text 124 339 Set the network to regression mode;
+#X msg 51 371 binary_logistic_regression;
+#X text 221 369 Set the network to binary logistic regression mode
+;
+#X msg 679 31 predict_from \$1;
+#X msg 679 91 predict_to \$1;
+#X text 787 32 Set an array to draw input for prediction from. Argument:
+Array name that holds input for the network (use "inlet" to go back
+to receiving input from the inlet of the object);
+#X text 787 92 Set an array to write predictions to. Argument: Array
+name to write the network's output to (use "outlet" to go back to outputting
+predictions from the object's first outlet);
+#X msg 679 161 morph \$1 \$1;
+#X text 768 195 \$1: /path/to/saved/model.ann to morph to;
+#X text 768 213 \$2: ramp time in milliseconds to ramp to new model
+;
+#X text 767 162 Morph between to saved models. Adapted from [line]'s
+source code. Arguments:;
+#X msg 679 273 confidences \$1;
+#X text 779 270 Set whether the network should output a list of confidences
+instead of a predicted class (used only in classification mode) (0|1)
+;
+#X msg 679 354 confidence_thresh \$1;
+#X text 813 352 Set a confidence threshold below which the network
+will output a list with class prediction and its confidence out the
+second outlet. This is effective only when the "confidences" message
+is 0 (the network outputs a predicted class \, and not a list of confidences).
+Argument:;
+#X text 812 427 \$1: value from 0 to 1 (1 not recommended \, the netwrok
+will never output anything). Defaults to 0 (disabled);
+#X msg 679 522 set_accuracy_denominator \$1;
+#X text 869 519 Set the denominator to determine the accuracy threshold
+when in regression mode. This is defined by the standard deviation
+of the output training data \, divined by this number. Defaults to
+250;
+#X restore 523 25 pd various_netwrok_messages;
+#X text 35 508 4: batch steps count (outputs during training in batches)
+;
+#X text 35 549 6: loss (outputs during training and validating);
+#X text 35 529 5: accuracy (outputs during training and validating)
+;
+#X text 35 607 Check the examples in the "examples" directory for more
+information on how to create \, train \, test \, and use various kinds
+of neural networks. Note that 02-mouse_input.pd uses [cyclone/mousestate]
+and 03-fashion_mnist.pd uses [command] and some Python scripts.;
+#X obj 37 706 neuralnet;
+#X text 37 16 [neuralnet] is an artificial neural network object that
+supports various different kinds of neural networks \, for classification
+\, regression \, and binary logistic regreassion. It is written in
+pure C and does not have any dependencies. It is based on the Python
+code from the book "Neural Networks from Scratch in Python".;

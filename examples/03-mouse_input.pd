@@ -1,0 +1,606 @@
+#N canvas 14 40 1347 979 10;
+#X floatatom 1012 736 10 0 0 1 loss - - 0;
+#X floatatom 989 759 10 0 0 1 accuracy - - 0;
+#X floatatom 945 782 8 0 0 1 epoch - - 0;
+#N canvas 719 482 591 316 save_and_load 0;
+#X listbox 50 57 20 0 0 0 - - - 0;
+#X listbox 50 167 20 0 0 0 - - - 0;
+#X msg 50 83 save models/\$1.ann;
+#X text 181 54 write a name for the model you want to save \, without
+file extension (default is .ann). it will be saved in the models subdirectory
+of this directory. otherwise \, set your own destination directory.
+;
+#X msg 50 191 load models/\$1.ann;
+#X text 184 163 write the name of the model you want to load \, without
+file extension \, saved in the models subdirectory. otherwise \, set
+your own directory to pull the model from.;
+#X obj 901 664 r mouse_input_example;
+#X obj 50 107 s mouse_input_example;
+#X obj 50 214 s mouse_input_example;
+#X connect 0 0 2 0;
+#X connect 1 0 4 0;
+#X connect 2 0 7 0;
+#X connect 4 0 8 0;
+#X restore 901 242 pd save_and_load;
+#X msg 475 460 poll;
+#X msg 517 460 nopoll;
+#X msg 901 507 destroy;
+#X floatatom 475 571 8 0 0 0 - - - 0;
+#X obj 475 633 sig~;
+#X obj 475 656 +~;
+#X obj 475 679 osc~;
+#X obj 475 772 *~, f 7;
+#X obj 475 795 dac~;
+#X obj 517 706 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 514 726 pack f 20;
+#X obj 514 749 line~;
+#X floatatom 554 571 8 0 0 0 - - - 0;
+#X obj 554 593 sig~;
+#X obj 554 616 osc~;
+#X obj 554 639 *~;
+#X floatatom 634 571 8 0 0 0 - - - 0;
+#X obj 634 599 pack f 20;
+#X obj 634 622 line~;
+#X obj 901 812 unpack f f f, f 27;
+#X obj 475 547 r carrier;
+#X obj 554 547 r mod;
+#X obj 634 547 r index;
+#X obj 901 835 s carrier;
+#X obj 980 835 s mod;
+#X obj 1060 835 s index;
+#X floatatom 475 517 8 0 0 0 - - - 0;
+#X floatatom 556 517 8 0 0 0 - - - 0;
+#X msg 46 902 shuffle_train_set;
+#X msg 475 60 train 10;
+#X msg 47 106 set_activation_function 0 sigmoid \, set_activation_function
+1 sigmoid \, set_activation_function 2 linear;
+#X text 46 84 2) set the activation functions;
+#X msg 47 187 set_loss_function mse;
+#X text 47 165 3) set the loss function;
+#X msg 47 256 set_optimizer adam;
+#X text 44 234 4) set the optimizer;
+#N canvas 829 285 200 228 mouse_state 0;
+#X obj 30 20 inlet;
+#X obj 83 118 outlet;
+#X obj 143 118 outlet;
+#X obj 30 60 cyclone/mousestate;
+#X obj 56 138 pack;
+#X obj 56 86 t f f;
+#X obj 116 86 t f f;
+#X obj 56 161 s mouse_coords;
+#X connect 0 0 3 0;
+#X connect 3 1 5 0;
+#X connect 3 2 6 0;
+#X connect 4 0 7 0;
+#X connect 5 0 4 0;
+#X connect 5 1 1 0;
+#X connect 6 0 4 1;
+#X connect 6 1 2 0;
+#X restore 475 493 pd mouse_state;
+#X obj 901 12 r mouse_coords;
+#X obj 901 127 spigot;
+#X msg 901 150 predict \$1 \$2;
+#X obj 934 106 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 901 712 neuralnet 2 64 64 3;
+#X msg 47 35 regression;
+#X text 45 11 1) set the mode of the network;
+#X listbox 901 330 20 0 0 1 model_name - - 0;
+#X floatatom 46 810 5 0 0 0 - - - 0;
+#X obj 46 832 pack f f;
+#X floatatom 91 810 5 0 0 0 - - - 0;
+#X msg 901 405 morph models/\$1.ann \$2;
+#X obj 901 381 pack s f;
+#X floatatom 946 357 5 0 0 1 ramp_time - - 0;
+#X obj 901 688 r mouse_input_example;
+#X obj 47 58 s mouse_input_example;
+#X obj 475 83 s mouse_input_example;
+#X obj 475 403 s mouse_input_example;
+#X obj 901 173 s mouse_input_example;
+#X obj 46 925 s mouse_input_example;
+#X obj 47 490 s mouse_input_example;
+#X obj 47 279 s mouse_input_example;
+#X obj 47 210 s mouse_input_example;
+#X obj 47 142 s mouse_input_example;
+#X obj 901 428 s mouse_input_example;
+#X obj 901 532 s mouse_input_example;
+#X obj 47 351 s mouse_input_example;
+#X obj 47 420 s mouse_input_example;
+#X text 44 304 5) set the learning rate;
+#X text 46 376 6) set the decay of the learning rate;
+#X text 46 442 7) set number of epochs;
+#X msg 901 629 abort_training;
+#X obj 901 652 s mouse_input_example;
+#X msg 475 380 validate;
+#X text 475 10 12) train the network. the argument is percentage of
+data to be used for validating. in this case we'll use 10% of the data
+to validate the model;
+#X floatatom 46 548 5 0 0 0 - - - 0;
+#X msg 46 570 desired_accuracy \$1;
+#X obj 46 593 s mouse_input_example;
+#X msg 625 278 release_mem;
+#X obj 475 304 s mouse_input_example;
+#X msg 190 810 store;
+#X msg 190 832 show;
+#X msg 223 832 clear;
+#X msg 262 832 hide;
+#X obj 175 790 bng 15 250 50 0 empty empty set_random_params 17 7 0
+10 #fcfcfc #000000 #000000;
+#X obj 46 881 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas 405 30 647 699 create_training_set 0;
+#X obj 30 217 metro 10;
+#X obj 30 241 t b b;
+#X obj 30 493 spigot 1;
+#X obj 93 381 t b b;
+#X obj 75 470 r \$0-spigots;
+#X obj 30 542 list append;
+#X obj 30 590 list trim;
+#X obj 30 567 list prepend add;
+#X obj 30 11 inlet;
+#X obj 107 543 print training_data;
+#X obj 30 109 t f f;
+#N canvas 265 478 374 488 set_x_y_offsets 0;
+#X obj 30 20 inlet;
+#X obj 30 152 sel 0 1 2 3;
+#X msg 30 385 0;
+#X obj 45 317 t b b;
+#X msg 45 340 0;
+#X obj 61 247 t b b;
+#X obj 77 177 t b b;
+#X msg 124 200 0;
+#X obj 30 408 s \$0-x;
+#X obj 77 408 s \$0-y;
+#X obj 45 363 s \$0-x;
+#X obj 92 363 s \$0-y;
+#X obj 61 293 s \$0-x;
+#X obj 108 293 s \$0-y;
+#X obj 77 223 s \$0-x;
+#X obj 124 223 s \$0-y;
+#X obj 193 106 r \$0-x_max;
+#X obj 193 129 - 20;
+#X obj 77 200 f;
+#X obj 61 270 f;
+#X obj 193 152 t f f;
+#X obj 108 265 f;
+#X obj 92 335 f;
+#X obj 203 224 - 20;
+#X obj 203 247 t f f;
+#X obj 203 201 r \$0-y_max;
+#X obj 45 48 r \$0-reset;
+#X obj 30 94 f;
+#X obj 30 117 t f f;
+#X obj 57 94 + 1;
+#X msg 45 71 0;
+#X connect 0 0 27 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 0;
+#X connect 1 2 5 0;
+#X connect 1 3 6 0;
+#X connect 2 0 8 0;
+#X connect 2 0 9 0;
+#X connect 3 0 4 0;
+#X connect 3 1 22 0;
+#X connect 4 0 10 0;
+#X connect 5 0 19 0;
+#X connect 5 1 21 0;
+#X connect 6 0 18 0;
+#X connect 6 1 7 0;
+#X connect 7 0 15 0;
+#X connect 16 0 17 0;
+#X connect 17 0 20 0;
+#X connect 18 0 14 0;
+#X connect 19 0 12 0;
+#X connect 20 0 18 1;
+#X connect 20 1 19 1;
+#X connect 21 0 13 0;
+#X connect 22 0 11 0;
+#X connect 23 0 24 0;
+#X connect 24 0 21 1;
+#X connect 24 1 22 1;
+#X connect 25 0 23 0;
+#X connect 26 0 30 0;
+#X connect 27 0 28 0;
+#X connect 28 0 1 0;
+#X connect 28 1 29 0;
+#X connect 29 0 27 1;
+#X connect 30 0 27 1;
+#X restore 120 405 pd set_x_y_offsets;
+#X obj 93 358 spigot 1;
+#X obj 30 85 t f b;
+#X msg 138 306 1;
+#X text 154 360 don't let one random target too many through;
+#X obj 81 53 unpack;
+#X obj 81 101 s \$0-x_max;
+#X obj 114 77 s \$0-y_max;
+#X obj 30 35 t b l;
+#X msg 30 59 1;
+#X obj 288 21 inlet;
+#X obj 288 44 route bang store;
+#X obj 334 91 s \$0-store;
+#X obj 30 613 s mouse_input_example;
+#X obj 47 187 r \$0-close_metro;
+#N canvas 958 375 506 530 done 0;
+#X obj 20 20 inlet;
+#X obj 20 463 outlet;
+#X obj 47 82 t b b;
+#X msg 47 390 0;
+#X obj 47 181 t b b;
+#X obj 47 413 s \$0-spigots;
+#X obj 20 60 t b b;
+#X msg 20 439 0;
+#X msg 74 367 normalize_input \$1 \$2;
+#X obj 74 390 s mouse_input_example;
+#X obj 74 317 t l b;
+#X text 89 180 also \, normalize the values based on the resolution
+of the monitor;
+#X obj 74 288 list;
+#X msg 74 105 0;
+#X obj 74 128 s \$0-close_metro;
+#X obj 95 217 r \$0-x_max;
+#X obj 140 242 r \$0-y_max;
+#X obj 95 265 pack f f;
+#X msg 101 340 normalize_output 350 350 1000;
+#X connect 0 0 6 0;
+#X connect 2 0 4 0;
+#X connect 2 1 13 0;
+#X connect 3 0 5 0;
+#X connect 4 0 3 0;
+#X connect 4 1 12 0;
+#X connect 6 0 7 0;
+#X connect 6 1 2 0;
+#X connect 7 0 1 0;
+#X connect 8 0 9 0;
+#X connect 10 0 8 0;
+#X connect 10 1 18 0;
+#X connect 12 0 10 0;
+#X connect 13 0 14 0;
+#X connect 15 0 17 0;
+#X connect 16 0 17 1;
+#X connect 17 0 12 1;
+#X connect 18 0 9 0;
+#X restore 174 317 pd done;
+#N canvas 958 533 200 242 counter 0;
+#X obj 20 20 inlet;
+#X obj 20 212 outlet;
+#X obj 35 60 r \$0-reset;
+#X obj 20 106 f;
+#X obj 20 129 t f f;
+#X obj 47 106 + 1;
+#X msg 35 83 0;
+#X obj 20 152 sel 3;
+#X connect 0 0 3 0;
+#X connect 2 0 6 0;
+#X connect 3 0 4 0;
+#X connect 4 0 7 0;
+#X connect 4 1 5 0;
+#X connect 5 0 3 1;
+#X connect 6 0 3 1;
+#X connect 7 0 1 0;
+#X restore 174 294 pd counter 3;
+#N canvas 498 535 360 272 get_params 0;
+#X obj 20 20 inlet;
+#X obj 20 182 outlet;
+#X obj 35 60 r \$0-reset;
+#X obj 20 106 f;
+#X obj 20 129 t f f;
+#X obj 47 106 + 1;
+#X msg 35 83 0;
+#X obj 20 152 text get \$0-params;
+#X text 78 108 get the stored parameters one by one;
+#X connect 0 0 3 0;
+#X connect 2 0 6 0;
+#X connect 3 0 4 0;
+#X connect 4 0 7 0;
+#X connect 4 1 5 0;
+#X connect 5 0 3 1;
+#X connect 6 0 3 1;
+#X connect 7 0 1 0;
+#X restore 93 434 pd get_params;
+#N canvas 435 707 501 307 randomize_coords 0;
+#X obj 20 20 inlet;
+#X obj 20 247 outlet;
+#X obj 20 99 random 20;
+#X obj 20 60 t b b;
+#X obj 89 78 random 20;
+#X obj 20 164 +;
+#X obj 89 164 +;
+#X obj 20 187 pack, f 12;
+#X obj 35 140 r \$0-x;
+#X obj 104 141 r \$0-y;
+#X text 102 99 provide small variations on coordinates at the four
+corners of the monitor;
+#X connect 0 0 3 0;
+#X connect 2 0 5 0;
+#X connect 3 0 2 0;
+#X connect 3 1 4 0;
+#X connect 4 0 6 0;
+#X connect 5 0 7 0;
+#X connect 6 0 7 1;
+#X connect 7 0 1 0;
+#X connect 8 0 5 1;
+#X connect 9 0 6 1;
+#X restore 30 518 pd randomize_coords;
+#N canvas 584 237 200 214 reset 0;
+#X obj 20 20 inlet;
+#X msg 97 101 1;
+#X obj 20 124 s \$0-reset;
+#X obj 97 124 s \$0-spigots;
+#X obj 20 60 sel 1;
+#X obj 20 83 t b b;
+#X connect 0 0 4 0;
+#X connect 1 0 3 0;
+#X connect 4 0 5 0;
+#X connect 5 0 2 0;
+#X connect 5 1 1 0;
+#X restore 57 136 pd reset;
+#N canvas 442 227 371 354 set_params 0;
+#X obj 43 30 inlet;
+#X obj 43 56 t b b b, f 10;
+#X obj 43 247 + 50;
+#X obj 71 176 + 50;
+#X obj 43 270 s carrier;
+#X obj 71 199 s mod;
+#X obj 100 130 s index;
+#X obj 100 84 random 700;
+#X obj 100 107 + 300;
+#X obj 43 224 random 300;
+#X obj 71 153 random 300;
+#X connect 0 0 1 0;
+#X connect 1 0 9 0;
+#X connect 1 1 10 0;
+#X connect 1 2 7 0;
+#X connect 2 0 4 0;
+#X connect 3 0 5 0;
+#X connect 7 0 8 0;
+#X connect 8 0 6 0;
+#X connect 9 0 2 0;
+#X connect 10 0 3 0;
+#X restore 288 175 pd set_params;
+#N canvas 1420 349 447 366 store_params 0;
+#X obj 20 20 inlet;
+#X obj 234 60 r carrier;
+#X obj 262 81 r mod;
+#X obj 291 102 r index;
+#X obj 234 123 pack f f f;
+#X obj 248 225 loadbang;
+#X msg 248 248 1e+15;
+#X obj 213 196 spigot 1;
+#X obj 258 172 r \$0-spigots;
+#X msg 61 132 clear;
+#X msg 20 157 click;
+#X msg 102 109 close;
+#X obj 213 172 list;
+#X obj 213 147 r \$0-store;
+#X obj 20 81 route show clear hide;
+#X obj 20 203 text define \$0-params;
+#X obj 213 276 text set \$0-params;
+#X connect 0 0 14 0;
+#X connect 1 0 4 0;
+#X connect 2 0 4 1;
+#X connect 3 0 4 2;
+#X connect 4 0 12 1;
+#X connect 5 0 6 0;
+#X connect 6 0 16 1;
+#X connect 7 0 16 0;
+#X connect 8 0 7 1;
+#X connect 9 0 15 0;
+#X connect 10 0 15 0;
+#X connect 11 0 15 0;
+#X connect 12 0 7 0;
+#X connect 13 0 12 0;
+#X connect 14 0 10 0;
+#X connect 14 1 9 0;
+#X connect 14 2 11 0;
+#X restore 381 67 pd store_params;
+#X obj 288 91 t b b;
+#X msg 315 115 1;
+#X obj 315 138 s \$0-spigots;
+#X obj 174 340 t f b;
+#X obj 449 358 outlet;
+#N canvas 498 293 200 268 counter 0;
+#X obj 20 20 inlet;
+#X obj 20 238 outlet;
+#X obj 72 238 outlet;
+#X obj 35 60 r \$0-reset;
+#X obj 20 106 f;
+#X obj 20 129 t f f;
+#X obj 47 106 + 1;
+#X msg 35 83 0;
+#X obj 45 178 t b b;
+#X obj 20 154 sel 0 149;
+#X connect 0 0 4 0;
+#X connect 3 0 7 0;
+#X connect 4 0 5 0;
+#X connect 5 0 9 0;
+#X connect 5 1 6 0;
+#X connect 6 0 4 1;
+#X connect 7 0 4 1;
+#X connect 8 0 7 0;
+#X connect 8 1 2 0;
+#X connect 9 0 1 0;
+#X connect 9 1 8 0;
+#X restore 93 259 pd counter 149;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 1 38 0;
+#X connect 2 0 29 0;
+#X connect 3 0 28 0;
+#X connect 3 1 11 0;
+#X connect 4 0 2 1;
+#X connect 5 0 7 0;
+#X connect 5 0 9 0;
+#X connect 6 0 24 0;
+#X connect 7 0 6 0;
+#X connect 8 0 19 0;
+#X connect 10 0 0 0;
+#X connect 10 1 30 0;
+#X connect 12 0 3 0;
+#X connect 13 0 10 0;
+#X connect 13 1 14 0;
+#X connect 14 0 12 1;
+#X connect 16 0 17 0;
+#X connect 16 1 18 0;
+#X connect 19 0 20 0;
+#X connect 19 1 16 0;
+#X connect 20 0 13 0;
+#X connect 21 0 22 0;
+#X connect 22 0 33 0;
+#X connect 22 1 23 0;
+#X connect 22 2 32 0;
+#X connect 25 0 0 0;
+#X connect 26 0 36 0;
+#X connect 27 0 26 0;
+#X connect 28 0 5 1;
+#X connect 29 0 5 0;
+#X connect 33 0 31 0;
+#X connect 33 1 34 0;
+#X connect 34 0 35 0;
+#X connect 36 0 12 1;
+#X connect 36 1 37 0;
+#X connect 38 0 12 0;
+#X connect 38 1 27 0;
+#X restore 46 857 pd create_training_set;
+#X text 45 619 9) click on the bang below to get random values in the
+oscillator parameters to the right. When you get a result that you
+like \, click on the "store" message to store it. Repeat this process
+four times \, one for each corner of your monitor. When you have stored
+four groups of values \, provide your monitor's resolution in the number
+atoms. A training data set will be created with random variations on
+the four corners of the monitor. A bang is sent out the outlet when
+done \, which also sends the "shuffle_train_set" to [neuralnet]. If
+you want to start this process from the beginning \, make sure to first
+click on "clear" below \, to clear the stored parameters;
+#X text 44 513 8) set a desired minimum accuracy if you want to be
+able to retraing the model without repeating the process in step 9
+;
+#X text 473 332 14) validate the network with 10% of the training data
+set. check the number atoms connected to the outlets of [neuralnet]
+to see if they change;
+#X text 474 435 15) start polling the mouse;
+#X text 515 673 16) turn the DSP on and turn up the volume in the slider
+to hear the results;
+#X text 932 34 17) open the [spigot] below to start predicting. you
+might want to click on "show" to the left to pop up the window with
+the four groups of values used for training and compare them with the
+predictions when you move the mouse to the corners of the screen.;
+#X text 899 202 18) if you want to save your model \, open this subpatch
+for info;
+#X text 899 276 19) you can also morph between saved models (mind \,
+if you haven't saved your model and call "morph" with another model
+\, the current one will be lost);
+#X text 899 470 20) when done \, destroy the network if you want to
+(it will be destroyed when this patch is closed);
+#X text 69 880 bangs when the training dataset is done;
+#X text 900 575 in case you see the accuracy and loss value being stuck
+to only slight variations \, you can abort the training before it is
+over;
+#X msg 475 278 retrain;
+#X text 158 900 shuffles training dataset for better fitting;
+#X msg 47 328 set_learning_rate 0.018;
+#X msg 47 397 set_decay 0.0002;
+#X msg 47 467 set_epochs 2000;
+#N canvas 271 165 642 448 some_notes 0;
+#X text 43 33 One of the most important details with neural networks
+is the training dataset. A dataset can make a network learn well \,
+or make it overfit and not perform properly. In this example I have
+created 150 iterations for each group of values \, where each iteration
+has a small variation in the mouse coordinates (open [pd create_training_set]
+to see how this is done). It took quite some iterations before I ended
+up in this setting. I also usually make sure the three parameters (carrier
+\, mod \, and index) are not very close to one another \, between the
+four groups (meaning that the carrier value of the first group is not
+close to the carrier value of any other group \, they should have some
+difference of more than 10).;
+#X text 43 216 While a largeer dataset (more iterations per group)
+produces a low loss \, the accuracy was hard to raise \, and was only
+raised when I made the training dataset smaller. You are free to experiment
+with different datasets to see if you can get better results. If you're
+fine with the results \, but the accuracy is still not satisfactory
+\, you can reduce the accuracy denominator with the message below \,
+which will make [neuralnet] more tolerant and will output a higher
+accuracy.;
+#X floatatom 44 355 5 0 0 0 - - - 0;
+#X msg 44 377 set_accuracy_denominator \$1;
+#X obj 44 400 s mouse_input_example;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X restore 901 893 pd some_notes;
+#X msg 533 278 keep_training;
+#X text 472 111 13) in case you have set a desired accuracy \, and
+the accuracy of [neuralnet] has not reached it \, the training dataset
+will not be erased from its memory. If you want to change some parameters
+and retrain the network \, first change any parameters you want \,
+and then send "retrain" to traing from scratch \, or "keep_training"
+to start over without resetting the weights and biases. Otherwise \,
+if you still want to move on with validating and making predictions
+\, send the "release_mem" message first. If you haven't set a desired
+accuracy \, don't send any of these messages \, as Pd will most likely
+crash;
+#X connect 4 0 40 0;
+#X connect 5 0 40 0;
+#X connect 6 0 66 0;
+#X connect 7 0 8 0;
+#X connect 8 0 9 0;
+#X connect 9 0 10 0;
+#X connect 10 0 11 0;
+#X connect 11 0 12 0;
+#X connect 11 0 12 1;
+#X connect 13 0 14 0;
+#X connect 14 0 15 0;
+#X connect 15 0 11 1;
+#X connect 16 0 17 0;
+#X connect 17 0 18 0;
+#X connect 18 0 19 0;
+#X connect 19 0 9 1;
+#X connect 20 0 21 0;
+#X connect 21 0 22 0;
+#X connect 22 0 19 1;
+#X connect 23 0 27 0;
+#X connect 23 1 28 0;
+#X connect 23 2 29 0;
+#X connect 24 0 7 0;
+#X connect 25 0 16 0;
+#X connect 26 0 20 0;
+#X connect 32 0 60 0;
+#X connect 33 0 57 0;
+#X connect 34 0 64 0;
+#X connect 36 0 63 0;
+#X connect 38 0 62 0;
+#X connect 40 0 30 0;
+#X connect 40 1 31 0;
+#X connect 41 0 42 0;
+#X connect 42 0 43 0;
+#X connect 43 0 59 0;
+#X connect 44 0 42 1;
+#X connect 45 0 23 0;
+#X connect 45 2 2 0;
+#X connect 45 4 1 0;
+#X connect 45 5 0 0;
+#X connect 46 0 56 0;
+#X connect 48 0 53 0;
+#X connect 49 0 50 0;
+#X connect 50 0 87 0;
+#X connect 51 0 50 1;
+#X connect 52 0 65 0;
+#X connect 53 0 52 0;
+#X connect 54 0 53 1;
+#X connect 55 0 45 0;
+#X connect 72 0 73 0;
+#X connect 74 0 58 0;
+#X connect 76 0 77 0;
+#X connect 77 0 78 0;
+#X connect 79 0 80 0;
+#X connect 81 0 87 1;
+#X connect 82 0 87 1;
+#X connect 83 0 87 1;
+#X connect 84 0 87 1;
+#X connect 85 0 87 1;
+#X connect 86 0 32 0;
+#X connect 87 0 86 0;
+#X connect 99 0 80 0;
+#X connect 101 0 67 0;
+#X connect 102 0 68 0;
+#X connect 103 0 61 0;
+#X connect 105 0 80 0;

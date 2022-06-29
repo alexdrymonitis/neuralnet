@@ -1,0 +1,338 @@
+#N canvas 70 30 1265 941 10;
+#N canvas 941 191 572 689 get_fashion_mnist_train_set 0;
+#X obj 30 20 inlet;
+#X obj 30 233 command/command;
+#X obj 30 465 print done;
+#X msg 42 209 kill;
+#X obj 190 369 route X y;
+#X obj 190 442 list-abs/list-extend;
+#X obj 169 467 list;
+#X obj 169 490 t l l;
+#X obj 241 508 list length;
+#X obj 241 531 > 0;
+#X obj 169 549 spigot;
+#X obj 169 572 list prepend add;
+#X obj 169 595 list trim;
+#X obj 280 201 t b b;
+#X msg 30 66 dir;
+#X obj 30 89 pdcontrol;
+#X obj 73 271 route row, f 20;
+#X obj 30 434 sel 0;
+#X obj 30 115 pack s s;
+#X msg 30 145 exec python \$1/datasets/fashion_mnist_images/get_mnist_data.py
+\$1 \$2;
+#X floatatom 73 318 8 0 0 0 - - - 0;
+#X obj 73 294 t f b b;
+#X obj 30 183 t a b;
+#X obj 30 43 t b a;
+#X text 130 313 should reach 59999 for training dataset and 8999 for
+validating;
+#X text 143 10 check the number atom below to see progress. could take
+some time before it starts counting;
+#N canvas 1007 202 200 342 isolate_train_or_validate 0;
+#X obj 30 20 inlet;
+#X obj 64 308 outlet;
+#X obj 30 60 symbol;
+#X obj 30 83 list fromsymbol;
+#X obj 30 106 list split 5;
+#X obj 64 195 list split;
+#X obj 64 131 t l l;
+#X obj 121 149 list length;
+#X obj 121 172 - 4;
+#X obj 64 218 list tosymbol;
+#X obj 64 243 sel validation;
+#X msg 64 266 symbol test;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 1 6 0;
+#X connect 5 0 9 0;
+#X connect 6 0 5 0;
+#X connect 6 1 7 0;
+#X connect 7 0 8 0;
+#X connect 8 0 5 1;
+#X connect 9 0 10 0;
+#X connect 10 0 11 0;
+#X connect 10 1 1 0;
+#X connect 11 0 1 0;
+#X restore 75 61 pd isolate_train_or_validate;
+#X obj 169 618 s mnist_example;
+#X connect 0 0 23 0;
+#X connect 1 0 17 0;
+#X connect 1 1 16 0;
+#X connect 3 0 1 0;
+#X connect 4 0 5 0;
+#X connect 4 1 5 0;
+#X connect 5 0 6 1;
+#X connect 6 0 7 0;
+#X connect 7 0 10 0;
+#X connect 7 1 8 0;
+#X connect 8 0 9 0;
+#X connect 9 0 10 1;
+#X connect 10 0 11 0;
+#X connect 11 0 12 0;
+#X connect 12 0 27 0;
+#X connect 13 0 6 1;
+#X connect 13 1 5 1;
+#X connect 14 0 15 0;
+#X connect 15 0 18 0;
+#X connect 16 0 21 0;
+#X connect 16 1 4 0;
+#X connect 17 0 2 0;
+#X connect 17 1 2 0;
+#X connect 18 0 19 0;
+#X connect 19 0 22 0;
+#X connect 21 0 20 0;
+#X connect 21 1 6 0;
+#X connect 21 2 5 1;
+#X connect 22 0 1 0;
+#X connect 22 1 13 0;
+#X connect 23 0 14 0;
+#X connect 23 1 26 0;
+#X connect 26 0 18 1;
+#X restore 25 450 pd get_fashion_mnist_train_set;
+#X obj 464 647 neuralnet 784 128 128 10;
+#X msg 464 41 set_epochs 10;
+#X msg 464 122 set_batch_size 128;
+#X msg 464 196 train;
+#X floatatom 605 676 10 0 0 1 loss - - 0;
+#X floatatom 576 699 10 0 0 1 accuracy - - 0;
+#X floatatom 548 724 8 0 0 1 batch_step - - 0;
+#X msg 25 510 set_activation_function 0 relu \, set_activation_function
+1 relu \, set_activation_function 2 softmax;
+#X msg 25 752 set_decay 0.001;
+#X msg 25 678 set_optimizer adam;
+#X msg 464 561 destroy;
+#X floatatom 520 747 8 0 0 1 epoch - - 0;
+#X msg 25 397 load_train_set;
+#X floatatom 464 428 5 0 0 0 - - - 0;
+#N canvas 719 482 704 434 save_and_load 0;
+#X msg 139 108 dir;
+#X obj 139 131 pdcontrol;
+#X obj 50 149 pack s s;
+#X listbox 50 57 20 0 0 0 - - - 0;
+#X obj 139 85 loadbang;
+#X msg 139 278 dir;
+#X obj 139 301 pdcontrol;
+#X obj 50 319 pack s s;
+#X listbox 50 227 20 0 0 0 - - - 0;
+#X obj 139 255 loadbang;
+#X text 187 35 write a name for the model you want to save \, without
+file extension (default is .ann). it will be saved in the models subdirectory
+of this directory;
+#X msg 50 173 save \$2/models/\$1.ann;
+#X msg 50 343 load \$2/models/\$1.ann;
+#X text 200 222 write the name of the model you want to load \, without
+file extension \, saved in the models subdirectory (make sure you have
+first destroyed the network \, if you have already created one);
+#X obj 50 197 s mnist_example;
+#X obj 50 366 s mnist_example;
+#X connect 0 0 1 0;
+#X connect 1 0 2 1;
+#X connect 2 0 11 0;
+#X connect 3 0 2 0;
+#X connect 4 0 0 0;
+#X connect 5 0 6 0;
+#X connect 6 0 7 1;
+#X connect 7 0 12 0;
+#X connect 8 0 7 0;
+#X connect 9 0 5 0;
+#X connect 11 0 14 0;
+#X connect 12 0 15 0;
+#X restore 464 509 pd save_and_load;
+#X floatatom 859 121 5 0 0 0 - - - 0;
+#X msg 859 143 confidence_thresh \$1;
+#X obj 859 304 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X msg 859 324 confidences \$1;
+#N canvas 1344 291 469 664 get_prediction_data 0;
+#X obj 30 20 inlet;
+#X obj 30 233 command/command;
+#X msg 42 209 kill;
+#X obj 30 361 list;
+#X obj 30 384 t l l;
+#X obj 102 402 list length;
+#X obj 102 425 > 0;
+#X obj 30 443 spigot;
+#X obj 30 489 list trim;
+#X obj 115 201 t b b;
+#X msg 30 66 dir;
+#X obj 30 89 pdcontrol;
+#X obj 30 183 t a b;
+#X obj 30 115 pack s f;
+#X msg 30 145 exec python \$1/datasets/fashion_mnist_images/predict_mnist_data.py
+\$1 \$2;
+#X obj 30 466 list prepend predict;
+#X obj 73 296 route X;
+#X obj 30 259 f;
+#X obj 30 282 sel 0;
+#X obj 73 320 list prepend;
+#X obj 73 343 t a a;
+#X obj 30 43 t b f f;
+#X obj 148 61 s test_prediction;
+#X obj 30 512 s mnist_example;
+#X connect 0 0 21 0;
+#X connect 1 0 17 0;
+#X connect 1 1 16 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 4 0 7 0;
+#X connect 4 1 5 0;
+#X connect 5 0 6 0;
+#X connect 6 0 7 1;
+#X connect 7 0 15 0;
+#X connect 8 0 23 0;
+#X connect 9 0 3 1;
+#X connect 9 1 19 1;
+#X connect 10 0 11 0;
+#X connect 11 0 13 0;
+#X connect 12 0 1 0;
+#X connect 12 1 9 0;
+#X connect 13 0 14 0;
+#X connect 14 0 12 0;
+#X connect 15 0 8 0;
+#X connect 16 0 19 0;
+#X connect 17 0 18 0;
+#X connect 18 0 3 0;
+#X connect 19 0 20 0;
+#X connect 20 0 3 1;
+#X connect 20 1 19 1;
+#X connect 21 0 10 0;
+#X connect 21 1 13 1;
+#X connect 21 2 22 0;
+#X restore 464 451 pd get_prediction_data;
+#X msg 857 404 predict_to pred_out;
+#N canvas 381 638 395 274 label_array 0;
+#X obj 30 154 s pred_out;
+#X obj 30 60 loadbang;
+#X obj 30 83 t b b;
+#X msg 57 108 xlabel -1.05 0 1 2 3 4 5 6 7 8 9;
+#X msg 30 131 ylabel -0.1 -1 0 1;
+#X connect 1 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 1 3 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X restore 856 602 pd label_array;
+#X obj 856 574 array define pred_out 10;
+#X msg 856 494 predict_to outlet;
+#X text 23 279 1) set mode;
+#X text 23 485 3) set the activation functions;
+#X text 859 71 if you want \, you can set a confidence threshold \,
+below which [neuralnet] will output a list of the class with the highest
+confidence and its confidence out the second outlet;
+#X text 858 198 you can also tell [neuralnet] to output a list with
+the confidences. in this case \, you can send the message "predict_to
+pred_out" and open the "pred_out" array where you can see the output.
+if you want to go back to getting the output from the left outlet \,
+send "predict_to outlet". when you send "confidences 1" \, the "confidence_thresh"
+message has no effect.;
+#X text 855 378 click to get the predictions in the "pred_out" array
+;
+#X text 854 454 click to get the predictions out the left outlet of
+[neuralnet];
+#X text 854 550 open to see predictions in the array;
+#X msg 25 840 set_weight_coeff 0.01;
+#X msg 464 381 bang;
+#X obj 464 404 random 10;
+#X floatatom 464 881 5 0 0 1 prediction - prediction 0;
+#X obj 492 773 unpack f f, f 12;
+#X floatatom 492 796 5 0 0 1 class - - 0;
+#X floatatom 561 796 8 0 0 1 confidence - - 0;
+#X obj 464 830 route float list;
+#X obj 510 855 print confidences;
+#X msg 25 301 classification;
+#X text 25 357 2) load the training set (it will take about 2.5 minutes
+\, open the subpatch to see progress);
+#X text 19 13 This example is based on the fashion MNIST data set \,
+following the last chapters of "Neural Netowrks from Scratch in Python".
+You will need to download the fashion MNIST data set. You can get it
+here https://github.com/zalandoresearch/fashion-mnist otherwise \,
+navigate to examples/datasets/fashion_mnist_images and run the fashion_mnist_download.py
+Python script \, which will download and unzip the dataset for you
+(copied from the "A Real Dataset" chapter of the book). Once you do
+that \, run the move_set.py Python script \, to move the last 100 images
+from each class in the test dataset to the predict/ directory \, so
+you can use it to test the model's predictions;
+#X obj 871 784 r test_prediction;
+#X obj 856 808 ==;
+#X obj 856 757 r prediction;
+#X obj 856 833 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X text 875 832 correct prediction?;
+#X msg 464 287 validate;
+#X msg 36 421 load_validation_set;
+#X msg 25 601 set_loss_function cat_x_entropy;
+#X text 23 577 4) set the loss function;
+#X text 21 655 5) set the optimizer;
+#X text 23 729 6) set the decay;
+#X text 23 801 7) set the initial weights coefficient (works better
+for classification than the default which is 0.1);
+#X text 461 18 8) set the number of epochs;
+#X text 462 95 9) set the batch size;
+#X text 463 172 10) train the model;
+#X text 465 251 11) load the validation data (below point 2 \, wait
+for a done message in Pd's console) and then validate the model;
+#X text 462 343 12) send numbers from 0 to 9 and look at the output
+of the left outlet of [neuralnet](the numbers should match);
+#X text 462 486 13) save your model if you want \, or load an existing
+model;
+#X text 461 540 14) destroy the network;
+#X obj 25 324 s mnist_example;
+#X obj 25 546 s mnist_example;
+#X obj 25 624 s mnist_example;
+#X obj 25 701 s mnist_example;
+#X obj 25 775 s mnist_example;
+#X obj 25 863 s mnist_example;
+#X obj 464 64 s mnist_example;
+#X obj 464 145 s mnist_example;
+#X obj 464 219 s mnist_example;
+#X obj 464 310 s mnist_example;
+#X obj 464 584 s mnist_example;
+#X obj 464 622 r mnist_example;
+#X obj 859 166 s mnist_example;
+#X obj 859 347 s mnist_example;
+#X obj 857 427 s mnist_example;
+#X obj 856 517 s mnist_example;
+#X text 19 192 Passing the training dataset and training the network
+can take some time \, so \, if you just want to try out its performance
+\, go to [pd save_and_load] under point 13 \, load the "mnist_example"
+model \, and then try it out by sending numbers through the number
+atom under point 12;
+#X text 573 771 <- not confident output;
+#X connect 1 0 39 0;
+#X connect 1 1 36 0;
+#X connect 1 2 12 0;
+#X connect 1 3 7 0;
+#X connect 1 4 6 0;
+#X connect 1 5 5 0;
+#X connect 2 0 69 0;
+#X connect 3 0 70 0;
+#X connect 4 0 71 0;
+#X connect 8 0 64 0;
+#X connect 9 0 67 0;
+#X connect 10 0 66 0;
+#X connect 11 0 73 0;
+#X connect 13 0 0 0;
+#X connect 14 0 20 0;
+#X connect 16 0 17 0;
+#X connect 17 0 75 0;
+#X connect 18 0 19 0;
+#X connect 19 0 76 0;
+#X connect 21 0 77 0;
+#X connect 24 0 78 0;
+#X connect 32 0 68 0;
+#X connect 33 0 34 0;
+#X connect 34 0 14 0;
+#X connect 36 0 37 0;
+#X connect 36 1 38 0;
+#X connect 39 0 35 0;
+#X connect 39 1 40 0;
+#X connect 41 0 63 0;
+#X connect 44 0 45 1;
+#X connect 45 0 47 0;
+#X connect 46 0 45 0;
+#X connect 49 0 72 0;
+#X connect 50 0 0 0;
+#X connect 51 0 65 0;
+#X connect 74 0 1 0;

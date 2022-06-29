@@ -1,6 +1,8 @@
 /*********************************************************************************
 * (c) 2022 Alexandros Drymonitis                                                 *
-* Based on code (c) 1997-1999 Miller Puckette                                    *
+* Based on code from the book "Neural Networks from Scratch in Python"           *
+* by Harrison Kinsley & Daniel Kukieła                                           *
+* and on code (c) 1997-1999 by Miller Puckette                                    *
 * All rights reserved.                                                           *
 *                                                                                *
 * Redistribution and use in source and binary forms, with or without             *

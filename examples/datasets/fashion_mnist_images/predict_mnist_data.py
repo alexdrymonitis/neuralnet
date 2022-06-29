@@ -1,3 +1,8 @@
+"""
+This script is copied and modified from chapter 19 from the book
+"Neural Networks from Scratch in Python" by Harrison Kinsley & Daniel Kukieła
+"""
+
 import os, cv2
 import numpy as np
 from time import sleep

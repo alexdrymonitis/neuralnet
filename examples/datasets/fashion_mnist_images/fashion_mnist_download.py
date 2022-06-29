@@ -1,3 +1,8 @@
+"""
+This script is copied from chapter 19 from the book
+"Neural Networks from Scratch in Python" by Harrison Kinsley & Daniel Kukieła
+"""
+
 from zipfile import ZipFile
 import os
 import urllib

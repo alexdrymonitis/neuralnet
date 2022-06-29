@@ -1,7 +1,7 @@
-#N canvas 14 40 1347 979 10;
-#X floatatom 1012 736 10 0 0 1 loss - - 0;
-#X floatatom 989 759 10 0 0 1 accuracy - - 0;
-#X floatatom 945 782 8 0 0 1 epoch - - 0;
+#N canvas 0 30 1347 979 10;
+#X floatatom 157 839 10 0 0 1 loss - - 0;
+#X floatatom 134 862 10 0 0 1 accuracy - - 0;
+#X floatatom 90 885 8 0 0 1 epoch - - 0;
 #N canvas 719 482 591 316 save_and_load 0;
 #X listbox 50 57 20 0 0 0 - - - 0;
 #X listbox 50 167 20 0 0 0 - - - 0;
@@ -21,45 +21,45 @@ your own directory to pull the model from.;
 #X connect 1 0 4 0;
 #X connect 2 0 7 0;
 #X connect 4 0 8 0;
-#X restore 901 242 pd save_and_load;
-#X msg 475 460 poll;
-#X msg 517 460 nopoll;
-#X msg 901 507 destroy;
-#X floatatom 475 571 8 0 0 0 - - - 0;
-#X obj 475 633 sig~;
-#X obj 475 656 +~;
-#X obj 475 679 osc~;
-#X obj 475 772 *~, f 7;
-#X obj 475 795 dac~;
-#X obj 517 706 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
+#X restore 901 523 pd save_and_load;
+#X msg 475 800 poll;
+#X msg 517 800 nopoll;
+#X msg 901 781 destroy;
+#X floatatom 901 41 8 0 0 0 - - - 0;
+#X obj 901 103 sig~;
+#X obj 901 126 +~;
+#X obj 901 149 osc~;
+#X obj 901 242 *~, f 7;
+#X obj 901 265 dac~;
+#X obj 943 176 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X obj 514 726 pack f 20;
-#X obj 514 749 line~;
-#X floatatom 554 571 8 0 0 0 - - - 0;
-#X obj 554 593 sig~;
-#X obj 554 616 osc~;
-#X obj 554 639 *~;
-#X floatatom 634 571 8 0 0 0 - - - 0;
-#X obj 634 599 pack f 20;
-#X obj 634 622 line~;
-#X obj 901 812 unpack f f f, f 27;
-#X obj 475 547 r carrier;
-#X obj 554 547 r mod;
-#X obj 634 547 r index;
-#X obj 901 835 s carrier;
-#X obj 980 835 s mod;
-#X obj 1060 835 s index;
-#X floatatom 475 517 8 0 0 0 - - - 0;
-#X floatatom 556 517 8 0 0 0 - - - 0;
-#X msg 46 902 shuffle_train_set;
-#X msg 475 60 train 10;
-#X msg 47 106 set_activation_function 0 sigmoid \, set_activation_function
+#X obj 940 196 pack f 20;
+#X obj 940 219 line~;
+#X floatatom 980 41 8 0 0 0 - - - 0;
+#X obj 980 63 sig~;
+#X obj 980 86 osc~;
+#X obj 980 109 *~;
+#X floatatom 1060 41 8 0 0 0 - - - 0;
+#X obj 1060 69 pack f 20;
+#X obj 1060 92 line~;
+#X obj 46 915 unpack f f f, f 27;
+#X obj 901 17 r carrier;
+#X obj 980 17 r mod;
+#X obj 1060 17 r index;
+#X obj 46 938 s carrier;
+#X obj 125 938 s mod;
+#X obj 205 938 s index;
+#X floatatom 475 857 8 0 0 0 - - - 0;
+#X floatatom 556 857 8 0 0 0 - - - 0;
+#X msg 475 299 shuffle_train_set;
+#X msg 475 400 train 10;
+#X msg 47 216 set_activation_function 0 sigmoid \, set_activation_function
 1 sigmoid \, set_activation_function 2 linear;
-#X text 46 84 2) set the activation functions;
-#X msg 47 187 set_loss_function mse;
-#X text 47 165 3) set the loss function;
-#X msg 47 256 set_optimizer adam;
-#X text 44 234 4) set the optimizer;
+#X text 46 194 2) set the activation functions;
+#X msg 47 297 set_loss_function mse;
+#X text 47 275 3) set the loss function;
+#X msg 47 366 set_optimizer adam;
+#X text 44 344 4) set the optimizer;
 #N canvas 829 285 200 228 mouse_state 0;
 #X obj 30 20 inlet;
 #X obj 83 118 outlet;
@@ -77,58 +77,58 @@ your own directory to pull the model from.;
 #X connect 5 1 1 0;
 #X connect 6 0 4 1;
 #X connect 6 1 2 0;
-#X restore 475 493 pd mouse_state;
-#X obj 901 12 r mouse_coords;
-#X obj 901 127 spigot;
-#X msg 901 150 predict \$1 \$2;
-#X obj 934 106 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X restore 475 833 pd mouse_state;
+#X obj 901 293 r mouse_coords;
+#X obj 901 408 spigot;
+#X msg 901 431 predict \$1 \$2;
+#X obj 934 387 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
-#X obj 901 712 neuralnet 2 64 64 3;
-#X msg 47 35 regression;
-#X text 45 11 1) set the mode of the network;
-#X listbox 901 330 20 0 0 1 model_name - - 0;
-#X floatatom 46 810 5 0 0 0 - - - 0;
-#X obj 46 832 pack f f;
-#X floatatom 91 810 5 0 0 0 - - - 0;
-#X msg 901 405 morph models/\$1.ann \$2;
-#X obj 901 381 pack s f;
-#X floatatom 946 357 5 0 0 1 ramp_time - - 0;
-#X obj 901 688 r mouse_input_example;
-#X obj 47 58 s mouse_input_example;
-#X obj 475 83 s mouse_input_example;
-#X obj 475 403 s mouse_input_example;
-#X obj 901 173 s mouse_input_example;
-#X obj 46 925 s mouse_input_example;
-#X obj 47 490 s mouse_input_example;
-#X obj 47 279 s mouse_input_example;
-#X obj 47 210 s mouse_input_example;
-#X obj 47 142 s mouse_input_example;
-#X obj 901 428 s mouse_input_example;
-#X obj 901 532 s mouse_input_example;
-#X obj 47 351 s mouse_input_example;
-#X obj 47 420 s mouse_input_example;
-#X text 44 304 5) set the learning rate;
-#X text 46 376 6) set the decay of the learning rate;
-#X text 46 442 7) set number of epochs;
-#X msg 901 629 abort_training;
-#X obj 901 652 s mouse_input_example;
-#X msg 475 380 validate;
-#X text 475 10 12) train the network. the argument is percentage of
+#X obj 46 815 neuralnet 2 64 64 3;
+#X msg 47 145 regression;
+#X text 45 121 1) set the mode of the network;
+#X listbox 901 611 20 0 0 1 model_name - - 0;
+#X floatatom 475 207 5 0 0 0 - - - 0;
+#X obj 475 229 pack f f;
+#X floatatom 520 207 5 0 0 0 - - - 0;
+#X msg 901 686 morph models/\$1.ann \$2;
+#X obj 901 662 pack s f;
+#X floatatom 946 638 5 0 0 1 ramp_time - - 0;
+#X obj 46 791 r mouse_input_example;
+#X obj 47 168 s mouse_input_example;
+#X obj 475 423 s mouse_input_example;
+#X obj 475 743 s mouse_input_example;
+#X obj 901 454 s mouse_input_example;
+#X obj 475 322 s mouse_input_example;
+#X obj 47 600 s mouse_input_example;
+#X obj 47 389 s mouse_input_example;
+#X obj 47 320 s mouse_input_example;
+#X obj 47 252 s mouse_input_example;
+#X obj 901 709 s mouse_input_example;
+#X obj 901 806 s mouse_input_example;
+#X obj 47 461 s mouse_input_example;
+#X obj 47 530 s mouse_input_example;
+#X text 44 414 5) set the learning rate;
+#X text 46 486 6) set the decay of the learning rate;
+#X text 46 552 7) set number of epochs;
+#X msg 901 898 abort_training;
+#X obj 901 921 s mouse_input_example;
+#X msg 475 720 validate;
+#X text 475 350 12) train the network. the argument is percentage of
 data to be used for validating. in this case we'll use 10% of the data
 to validate the model;
-#X floatatom 46 548 5 0 0 0 - - - 0;
-#X msg 46 570 desired_accuracy \$1;
-#X obj 46 593 s mouse_input_example;
-#X msg 625 278 release_mem;
-#X obj 475 304 s mouse_input_example;
-#X msg 190 810 store;
-#X msg 190 832 show;
-#X msg 223 832 clear;
-#X msg 262 832 hide;
-#X obj 175 790 bng 15 250 50 0 empty empty set_random_params 17 7 0
+#X floatatom 46 658 5 0 0 0 - - - 0;
+#X msg 46 680 desired_accuracy \$1;
+#X obj 46 703 s mouse_input_example;
+#X msg 625 618 release_mem;
+#X obj 475 644 s mouse_input_example;
+#X msg 619 207 store;
+#X msg 619 229 show;
+#X msg 652 229 clear;
+#X msg 691 229 hide;
+#X obj 604 187 bng 15 250 50 0 empty empty set_random_params 17 7 0
 10 #fcfcfc #000000 #000000;
-#X obj 46 881 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 475 278 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #N canvas 405 30 647 699 create_training_set 0;
 #X obj 30 217 metro 10;
 #X obj 30 241 t b b;
@@ -461,8 +461,8 @@ corners of the monitor;
 #X connect 36 1 37 0;
 #X connect 38 0 12 0;
 #X connect 38 1 27 0;
-#X restore 46 857 pd create_training_set;
-#X text 45 619 9) click on the bang below to get random values in the
+#X restore 475 254 pd create_training_set;
+#X text 474 16 9) click on the bang below to get random values in the
 oscillator parameters to the right. When you get a result that you
 like \, click on the "store" message to store it. Repeat this process
 four times \, one for each corner of your monitor. When you have stored
@@ -472,35 +472,35 @@ the four corners of the monitor. A bang is sent out the outlet when
 done \, which also sends the "shuffle_train_set" to [neuralnet]. If
 you want to start this process from the beginning \, make sure to first
 click on "clear" below \, to clear the stored parameters;
-#X text 44 513 8) set a desired minimum accuracy if you want to be
+#X text 44 623 8) set a desired minimum accuracy if you want to be
 able to retraing the model without repeating the process in step 9
 ;
-#X text 473 332 14) validate the network with 10% of the training data
+#X text 473 672 14) validate the network with 10% of the training data
 set. check the number atoms connected to the outlets of [neuralnet]
 to see if they change;
-#X text 474 435 15) start polling the mouse;
-#X text 515 673 16) turn the DSP on and turn up the volume in the slider
+#X text 474 775 15) start polling the mouse;
+#X text 941 143 16) turn the DSP on and turn up the volume in the slider
 to hear the results;
-#X text 932 34 17) open the [spigot] below to start predicting. you
+#X text 932 315 17) open the [spigot] below to start predicting. you
 might want to click on "show" to the left to pop up the window with
 the four groups of values used for training and compare them with the
 predictions when you move the mouse to the corners of the screen.;
-#X text 899 202 18) if you want to save your model \, open this subpatch
+#X text 899 483 18) if you want to save your model \, open this subpatch
 for info;
-#X text 899 276 19) you can also morph between saved models (mind \,
+#X text 899 557 19) you can also morph between saved models (mind \,
 if you haven't saved your model and call "morph" with another model
 \, the current one will be lost);
-#X text 899 470 20) when done \, destroy the network if you want to
+#X text 899 744 20) when done \, destroy the network if you want to
 (it will be destroyed when this patch is closed);
-#X text 69 880 bangs when the training dataset is done;
-#X text 900 575 in case you see the accuracy and loss value being stuck
+#X text 498 277 bangs when the training dataset is done;
+#X text 900 844 in case you see the accuracy and loss value being stuck
 to only slight variations \, you can abort the training before it is
 over;
-#X msg 475 278 retrain;
-#X text 158 900 shuffles training dataset for better fitting;
-#X msg 47 328 set_learning_rate 0.018;
-#X msg 47 397 set_decay 0.0002;
-#X msg 47 467 set_epochs 2000;
+#X msg 475 618 retrain;
+#X text 587 297 shuffles training dataset for better fitting;
+#X msg 47 438 set_learning_rate 0.018;
+#X msg 47 507 set_decay 0.0002;
+#X msg 47 577 set_epochs 2000;
 #N canvas 271 165 642 448 some_notes 0;
 #X text 43 33 One of the most important details with neural networks
 is the training dataset. A dataset can make a network learn well \,
@@ -526,9 +526,9 @@ accuracy.;
 #X obj 44 400 s mouse_input_example;
 #X connect 2 0 3 0;
 #X connect 3 0 4 0;
-#X restore 901 893 pd some_notes;
-#X msg 533 278 keep_training;
-#X text 472 111 13) in case you have set a desired accuracy \, and
+#X restore 1191 921 pd some_notes;
+#X msg 533 618 keep_training;
+#X text 472 451 13) in case you have set a desired accuracy \, and
 the accuracy of [neuralnet] has not reached it \, the training dataset
 will not be erased from its memory. If you want to change some parameters
 and retrain the network \, first change any parameters you want \,
@@ -538,6 +538,9 @@ if you still want to move on with validating and making predictions
 \, send the "release_mem" message first. If you haven't set a desired
 accuracy \, don't send any of these messages \, as Pd will most likely
 crash;
+#X text 49 20 This example uses the mouse coordinates to control three
+parameters in a simple FM patch. It uses [mousestate] from the Cyclone
+library.;
 #X connect 4 0 40 0;
 #X connect 5 0 40 0;
 #X connect 6 0 66 0;

@@ -3,7 +3,6 @@
 * Code translated to C from Python from the book                                 *
 * "Neural Networks from Scratch in Python" by Harrison Kinsley & Daniel Kukieła  *
 * and based on code (c) 1997-1999 by Miller Puckette                             *
-* All rights reserved.                                                           *
 *                                                                                *
 * Redistribution and use in source and binary forms, with or without             *
 * modification, are permitted provided that the following conditions are met:    *
@@ -1253,8 +1252,10 @@ static void layer_init(t_neuralnet *x, t_layer *layer, int input_size,
   /* set the sigmoid function by default
   which can be changed via messages */
   layer->x_activation_index = 1;
+  layer->x_allocate_softmax = 0;
   /* disable dropout by default */
   layer->x_dropout_allocated = 0;
+  layer->x_dropout_rate = 0.0;
 }
 
 static void set_dropout(t_neuralnet *x, t_float which_layer, t_float rate)
@@ -1363,7 +1364,9 @@ static void destroy_dealloc(t_neuralnet *x)
 static void destroy(t_neuralnet *x)
 {
   destroy_dealloc(x);
-  free(x->x_layers);
+  if (x->x_net_created) {
+    free(x->x_layers);
+  }
   init_object_variables(x);
   x->x_net_created = 0;
   x->x_net_trained = 0;
@@ -1373,6 +1376,9 @@ static void destroy(t_neuralnet *x)
 static void neuralnet_free(t_neuralnet *x)
 {
   destroy_dealloc(x);
+  if (x->x_net_created) {
+    free(x->x_layers);
+  }
   dealloc_transposed_input(x);
   dealloc_target(x, x->x_num_in_samples);
   dealloc_test_mem(x, x->x_num_in_samples);
@@ -1938,6 +1944,7 @@ static void set_batch_size(t_neuralnet *x, t_symbol *s, int argc, t_atom *argv)
   alloc_batch_mem(x);
   /* update x_num_in_samples to fit one batch only */
   x->x_num_in_samples = x->x_batch_size;
+  post("batch size is set to %d", (int)x->x_batch_size);
 }
 
 static void set_epochs(t_neuralnet *x, t_float epochs)

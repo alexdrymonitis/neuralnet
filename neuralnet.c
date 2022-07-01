@@ -480,6 +480,10 @@ static void set_activation_function(t_neuralnet *x, t_symbol *s, int argc, t_ato
   int layer;
   int found_func = 0;
 
+  if (argc != 2) {
+    pd_error(x, "set_activation_function takes 2 arguments");
+    return;
+  }
   if (argv[0].a_type != A_FLOAT || argv[1].a_type != A_SYMBOL) {
     pd_error(x, "first argument must be a float and second must be a symbol");
     return;

@@ -1,4 +1,5 @@
 # neuralnet
+Version 0.2
 ## An Artificial Neural Network framework for Pure Data
 [neuralnet] is an artificial neural network Pd external, written in pure C, without any dependencies. It is inspired by the book "Neural Networks from Scratch in Python" by Harrison Kinsley & Daniel Kukieła. It is an attempt to translate the Python code to C with the Pure Data API, to run neural networks within Pd.
 
@@ -13,5 +14,8 @@ Example 04-fahion_mnist.pd uses the [command] external, plus some Python scripts
 Example 05-accelerometer_input.pd uses a mobile app to send accelerometer values via OSC.
 
 All external objects used in the examples can be installed via the deken plugin (Help->Find externals).
+
+Log:
+-Fixes crash on Windows with the set_activation_function() message that took A_FLOAT and A_SYMBOL as arguments, which apparently in Windows is not possible.
 
 Written by Alexandros Drymonitis

@@ -15,7 +15,7 @@ Example 05-accelerometer_input.pd uses a mobile app to send accelerometer values
 
 All external objects used in the examples can be installed via the deken plugin (Help->Find externals).
 
-Log:
+Log:<br />
 -Fixes crash on Windows with the set_activation_function() message that took A_FLOAT and A_SYMBOL as arguments, which apparently in Windows is not possible.
 
 Written by Alexandros Drymonitis

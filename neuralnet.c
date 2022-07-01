@@ -474,11 +474,19 @@ static void softmax_backward(t_neuralnet *x, t_float **dvalues, int index)
   }
 }
 
-static void set_activation_function(t_neuralnet *x, t_float f, t_symbol *func)
+static void set_activation_function(t_neuralnet *x, t_symbol *s, int argc, t_atom *argv)
 {
   int i;
-  int layer = (int)f;
+  int layer;
   int found_func = 0;
+
+  if (argv[0].a_type != A_FLOAT || argv[1].a_type != A_SYMBOL) {
+    pd_error(x, "first argument must be a float and second must be a symbol");
+    return;
+  }
+
+  layer = (int)atom_getfloat(argv);
+  t_symbol *func = atom_getsymbol(argv+1);
 
   if (layer >= x->x_num_layers) {
     pd_error(x,"max layer is %d", (int)(x->x_num_layers-1));
@@ -3638,7 +3646,7 @@ void neuralnet_setup(void)
   class_addmethod(neuralnet_class, (t_method)set_epochs,
     gensym("set_epochs"), A_FLOAT, 0);
   class_addmethod(neuralnet_class, (t_method)set_activation_function,
-    gensym("set_activation_function"), A_FLOAT, A_SYMBOL, 0);
+    gensym("set_activation_function"), A_GIMME, 0);
   class_addmethod(neuralnet_class, (t_method)create,
     gensym("create"), A_GIMME, 0);
   class_addmethod(neuralnet_class, (t_method)destroy,

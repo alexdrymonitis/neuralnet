@@ -364,7 +364,7 @@ static void relu_backward(t_neuralnet *x, t_float **dvalue, int index);
 static void linear_backward(t_neuralnet *x, t_float **dvalues, int index);
 static void softmax_backward(t_neuralnet *x, t_float **dvalues, int index);
 /* set the activation function for one layer */
-static void set_activation_function(t_neuralnet *x, t_float f, t_symbol *func);
+static void set_activation_function(t_neuralnet *x, t_symbol *s, int argc, t_atom *argv);
 /* common function for all forward passes to set values to the output list */
 static void set_vec_val(t_neuralnet *x, t_atom *vec, t_float val, int ndx);
 

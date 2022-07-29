@@ -76,9 +76,6 @@ is .ann);
 #X restore 523 193 pd saving_and_loading_models_messages;
 #X text 35 173 \$1: number of neurons in input layer;
 #X text 35 189 \$2: number of neurons in first hidden layer (N);
-#X text 35 205 \$3: if this is the last argument it is the nubmer of
-neurons in the output layer \, otherwise it is the number of neurons
-in N+1 hidden layer;
 #X text 35 255 ...;
 #X text 35 283 $<N+2>: number of neurons in the output layer (unless
 there are only three arguments \, in any case \, the last argument
@@ -142,23 +139,19 @@ requirements of "desired_loss" and "desired_accuracy" respectively
 ;
 #X text 664 436 Retrains the network when the "desired_loss" or "desired_accuracy"
 messages have been sent (use this and not "train");
-#X text 745 335 Set an accuracy threshold \, where \, if the accuracy
-of the network is below it after training is done \, the training dataset
-memory will not be cleared an freed \, so you can change some parameters
-of the network and retrain it without having to reload the training
-dataset. Defaults to 0;
 #X text 715 225 Set a loss threshold \, where \, if the loss of the
 network is above it after training is done \, the training dataset
-memory will not be cleared an freed \, so you can change some parameters
+memory will not be cleared and freed \, so you can change some parameters
 of the network and retrain it without having to reload the training
 dataset. Defaults to FLT_MAX (3.40282e+38);
+#X text 745 335 Set an accuracy threshold \, where \, if the accuracy
+of the network is below it after training is done \, the training dataset
+memory will not be cleared and freed \, so you can change some parameters
+of the network and retrain it without having to reload the training
+dataset. Defaults to 0;
 #X restore 523 81 pd training_validating_and_predicting;
 #N canvas 170 106 1200 707 dataset_messages 0;
 #X text 176 108 ...;
-#X text 174 133 In case training or testing data are set via arrays
-in Pd \, the names of the arrays have to be set with this message.
-The number of arguments must be equal to the first argument in the
-network creation message (the number of inputs of the network);
 #X text 182 264 Similar to the "data_in_arrays" message \, only for
 output training or testing data. This message must be sent after the
 "data_in_arrays" message. The number of arguments must be equal to
@@ -170,15 +163,11 @@ data. Arguments:;
 #X text 122 473 \$1: first input datum (N);
 #X text 175 63 \$1: first input data array (N);
 #X text 175 83 $<N+1>: second input data array;
-#X text 122 494 $<N+1>: N+1 input datum (in case network has more than
-one inputs);
 #X text 121 560 $<N+2>: first output datum;
 #X text 127 592 ...;
 #X text 123 618 The total number of arguments must equal the number
 of input and output neurons of the network (the first and last argument
 of the network creation message);
-#X text 770 264 Maximum values of the inputs \, used to normalize data
-to a range from 0 to 1 or from -1 to 1 . Arguments:;
 #X text 773 305 \$1: first input datum maximum value (N);
 #X text 773 325 $<N+1>: N+1 input datum maximum value;
 #X text 775 348 ...;
@@ -194,8 +183,6 @@ data to a range from 0 to 1 or from -1 to 1 . Arguments:;
 of the network (the last argument of the network creation message)
 ;
 #X msg 623 631 shuffle_train_set;
-#X text 740 629 Shuffle the training data set (used for better fitting
-the network);
 #X msg 34 28 data_in_arrays \$1 ...;
 #X msg 34 268 data_out_arrays \$1 ...;
 #X msg 616 265 normalize_input \$1 ...;
@@ -206,19 +193,29 @@ array must be equal to the number of input neurons of the network;
 #X text 732 189 \$2: Array name for the output layer. The size of the
 array must be equal to the number of output neurons of the network
 ;
+#X msg 35 394 add [\$1] ...;
+#X text 174 133 In case training or testing data are set via arrays
+in Pd \, the names of the arrays have to be set with this message.
+The number of arguments must be equal to the first argument in the
+network creation message (the number of inputs of the network);
+#X text 123 393 Add training or testing data manually. If arrays are
+added with the "add_arrays" message (look to the right column in this
+example subpatch) \, then "add" takes no arguments. Otherwise it takes
+at least one argument. Arguments (optional):;
+#X text 122 494 $<N+1>: N+1 input datum (in case network has more than
+one input);
 #X text 732 25 This message adds arrays vertically for the input and
 output of the network (meaning \, each element of an array corresponds
 to one neuron in the input or output layer). This is usefull when all
-training or predicting data is loaded to an array in Pd \, for every
+training or prediction data is loaded to an array in Pd \, for every
 sample separately. Once this message is sent \, every time new data
 is imported \, the message "add" with no arguments must be sent \,
-and [neural_net] will read the data out of these two arrays Arguments:
+and [neuralnet] will read the data out of these two arrays Arguments:
 ;
-#X msg 35 394 add [\$1] ...;
-#X text 123 393 Add training or testing data manually. If arrays are
-added withthe "add_arrays" message (look to the right column in this
-example subpatch) \, then "add" takes no arguments. Otherwise it takes
-at least one argument. Arguments (optional):;
+#X text 770 264 Maximum values of the inputs \, used to normalize data
+to a range from 0 to 1 or from -1 to 1 Arguments:;
+#X text 740 629 Shuffle the training data set (used for better fitting
+of the network);
 #X restore 523 53 pd dataset_messages;
 #N canvas 284 184 649 623 layer_messages 0;
 #X text 242 335 "linear": Linear activation function;
@@ -246,20 +243,31 @@ the weights of the layers. Internally \, the seed is set on object
 initialization with srand(time(0)) \, but some systems may not have
 a reliable time (e.g. a Raspberry Pi that is not constantly powered)
 \, so "seed" enables setting the random seed externally;
-#X text 170 106 \$2: Dropout rate (e.g. 0.1 means 10% of neuros are
+#X text 170 106 \$2: Dropout rate (e.g. 0.1 means 10% of neurons are
 dropped in each epoch);
 #X restore 523 109 pd layer_messages;
-#N canvas 280 172 1313 678 various_netwrok_messages 0;
-#X text 186 43 create a network. arguements:;
-#X text 186 60 \$1: number of neurons in input layer;
-#X text 186 76 \$2: number of neurons in first hidden layer (N);
-#X text 186 92 \$3: if this is the last argument it is the nubmer of
+#X text 35 508 4: batch steps count (outputs during training in batches)
+;
+#X text 35 549 6: loss (outputs during training and validating);
+#X text 35 529 5: accuracy (outputs during training and validating)
+;
+#X text 35 607 Check the examples in the "examples" directory for more
+information on how to create \, train \, test \, and use various kinds
+of neural networks. Note that 02-mouse_input.pd uses [cyclone/mousestate]
+and 03-fashion_mnist.pd uses [command] and some Python scripts.;
+#X obj 37 706 neuralnet;
+#X text 37 16 [neuralnet] is an artificial neural network object that
+supports various different kinds of neural networks \, for classification
+\, regression \, and binary logistic regreassion. It is written in
+pure C and does not have any dependencies. It is based on the Python
+code from the book "Neural Networks from Scratch in Python".;
+#X text 35 205 \$3: if this is the last argument it is the number of
 neurons in the output layer \, otherwise it is the number of neurons
 in N+1 hidden layer;
+#N canvas 0 94 1280 678 various_network_messages 0;
+#X text 186 60 \$1: number of neurons in input layer;
+#X text 186 76 \$2: number of neurons in first hidden layer (N);
 #X text 186 142 ...;
-#X text 186 170 $<N+2>: number of neurons in the output layer (unless
-there are only three arguments \, in any case \, the last argument
-is sets the output layer);
 #X msg 50 490 destroy;
 #X text 105 490 destroy the network;
 #X text 184 228 for example \, the message "create 2 64 64 3" creates
@@ -297,26 +305,18 @@ will output a list with class prediction and its confidence out the
 second outlet. This is effective only when the "confidences" message
 is 0 (the network outputs a predicted class \, and not a list of confidences).
 Argument:;
-#X text 812 427 \$1: value from 0 to 1 (1 not recommended \, the netwrok
-will never output anything). Defaults to 0 (disabled);
 #X msg 679 522 set_accuracy_denominator \$1;
 #X text 869 519 Set the denominator to determine the accuracy threshold
 when in regression mode. This is defined by the standard deviation
 of the output training data \, divined by this number. Defaults to
 250;
-#X restore 523 25 pd various_netwrok_messages;
-#X text 35 508 4: batch steps count (outputs during training in batches)
-;
-#X text 35 549 6: loss (outputs during training and validating);
-#X text 35 529 5: accuracy (outputs during training and validating)
-;
-#X text 35 607 Check the examples in the "examples" directory for more
-information on how to create \, train \, test \, and use various kinds
-of neural networks. Note that 02-mouse_input.pd uses [cyclone/mousestate]
-and 03-fashion_mnist.pd uses [command] and some Python scripts.;
-#X obj 37 706 neuralnet;
-#X text 37 16 [neuralnet] is an artificial neural network object that
-supports various different kinds of neural networks \, for classification
-\, regression \, and binary logistic regreassion. It is written in
-pure C and does not have any dependencies. It is based on the Python
-code from the book "Neural Networks from Scratch in Python".;
+#X text 186 43 create a network. arguments:;
+#X text 186 92 \$3: if this is the last argument it is the number of
+neurons in the output layer \, otherwise it is the number of neurons
+in N+1 hidden layer;
+#X text 186 170 $<N+2>: number of neurons in the output layer (unless
+there are only three arguments \, in any case \, the last argument
+sets the output layer);
+#X text 812 427 \$1: value from 0 to 1 (1 not recommended \, the network
+will never output anything). Defaults to 0 (disabled);
+#X restore 523 25 pd various_network_messages;

@@ -110,8 +110,6 @@ desired output concatenated together as a single list.;
 #X msg 47 437 set_epochs 1500;
 #X text 46 618 7) train the model with 10% of the samples kept for
 validating;
-#X text 483 121 8) validate the model (check the number atoms connected
-to its outlets);
 #X text 482 231 9) Generate random input data to test how well the
 net has learned XOR (check the two toggles below), f 35;
 #X text 483 463 10) destroy when done;
@@ -119,6 +117,8 @@ net has learned XOR (check the two toggles below), f 35;
 It is a simple example of the exclusive-or (XOR) function.;
 #X text 45 492 6) Generate training data (will stop at 3000 samples)
 ;
+#X text 483 121 8) validate the model (check the number of atoms connected
+to its outlets);
 #X connect 0 0 31 0;
 #X connect 0 2 3 0;
 #X connect 0 4 2 0;

@@ -192,8 +192,6 @@ of 100 elements;
 ;
 #X text 502 91 9) set a test target data array (found in [pd data_arrays])
 ;
-#X text 504 260 11) send an increnting ramp and see the output of the
-network in the array to the right;
 #X text 502 433 12) or test the network manually and check its output
 in the vertical slider below;
 #X text 504 713 13) when done \, destroy the network (it will also
@@ -219,25 +217,27 @@ to its outlets);
 #X obj 505 371 s sine_example;
 #X obj 505 512 s sine_example;
 #X obj 47 613 r sine_example;
+#X text 504 260 11) send an incrementing ramp and see the output of
+the network in the array to the right;
 #X connect 0 0 4 0;
 #X connect 0 2 3 0;
 #X connect 0 4 2 0;
 #X connect 0 5 1 0;
-#X connect 5 0 39 0;
-#X connect 6 0 45 0;
-#X connect 7 0 44 0;
-#X connect 8 0 46 0;
-#X connect 12 0 50 0;
+#X connect 5 0 38 0;
+#X connect 6 0 44 0;
+#X connect 7 0 43 0;
+#X connect 8 0 45 0;
+#X connect 12 0 49 0;
 #X connect 13 0 24 0;
 #X connect 15 0 18 0;
 #X connect 16 0 17 0;
-#X connect 17 0 51 0;
-#X connect 19 0 41 0;
-#X connect 20 0 42 0;
-#X connect 22 0 43 0;
+#X connect 17 0 50 0;
+#X connect 19 0 40 0;
+#X connect 20 0 41 0;
+#X connect 22 0 42 0;
 #X connect 24 0 12 0;
-#X connect 33 0 49 0;
-#X connect 35 0 40 0;
+#X connect 32 0 48 0;
+#X connect 34 0 39 0;
+#X connect 36 0 46 0;
 #X connect 37 0 47 0;
-#X connect 38 0 48 0;
-#X connect 52 0 0 0;
+#X connect 51 0 0 0;

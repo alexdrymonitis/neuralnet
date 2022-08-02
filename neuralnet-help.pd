@@ -87,7 +87,7 @@ is sets the output layer);
 right);
 #X text 37 427 Outlets:;
 #X text 35 449 1: predictions;
-#X text 35 469 2: not confident predictions (see [pd misc_messages])
+#X text 35 469 2: not confident predictions (see [pd various_network_messages])
 ;
 #X text 35 488 3: epoch count (outputs during training);
 #N canvas 429 144 1152 659 training_validating_and_predicting 0;

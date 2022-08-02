@@ -479,6 +479,7 @@ static void set_activation_function(t_neuralnet *x, t_symbol *s, int argc, t_ato
   int i;
   int layer;
   int found_func = 0;
+  (void)(s); /* unused */
 
   if (argc != 2) {
     pd_error(x, "set_activation_function takes 2 arguments");
@@ -1349,6 +1350,7 @@ static void create_net(t_neuralnet *x, int argc, t_atom *argv)
 
 static void create(t_neuralnet *x, t_symbol *s, int argc, t_atom *argv)
 {
+  (void)(s); /* unused */
   create_net(x, argc, argv);
 }
 
@@ -1796,6 +1798,7 @@ static void train_net(t_neuralnet *x)
 static void train(t_neuralnet *x, t_symbol *s, int argc, t_atom *argv)
 {
   int i;
+  (void)(s); /* unused */
   x->x_is_training = 1;
   x->x_is_validating = 0;
   x->x_is_predicting = 0;
@@ -1922,6 +1925,7 @@ static void set_batch_size(t_neuralnet *x, t_symbol *s, int argc, t_atom *argv)
 {
   int size = 0;
   int percentage;
+  (void)(s); /* unused */
   if (argc > 0) {
     size = (int)atom_getfloat(argv);
     if (argc > 2) {
@@ -2034,6 +2038,7 @@ static void predict(t_neuralnet *x, t_symbol *s, int argc, t_atom *argv)
   int i;
   t_word *vec;
   int array_size;
+  (void)(s); /* unused */
   if (x->x_net_trained) {
     if (argc > 0) {
       if (argc != x->x_input_size) {
@@ -2809,6 +2814,7 @@ static void normalize_input(t_neuralnet *x, t_symbol *s, int argc, t_atom *argv)
 {
   int i;
   t_atom *argv_local = argv;
+  (void)(s); /* unused */
   if (argc > 0) {
     if (argc != x->x_input_size) {
       pd_error(x, "%d arguments for %d inputs", argc, x->x_input_size);
@@ -2825,6 +2831,7 @@ static void normalize_input(t_neuralnet *x, t_symbol *s, int argc, t_atom *argv)
 static void normalize_output(t_neuralnet *x, t_symbol *s, int argc, t_atom *argv)
 {
   int i;
+  (void)(s); /* unused */
   if (argc > 0) {
     if (argc != x->x_output_size) {
       pd_error(x, "arguments must as many as number of network inputs");
@@ -2844,6 +2851,7 @@ static void add(t_neuralnet *x, t_symbol *s, int argc, t_atom *argv)
 {
   int is_one_hot = 0;
   int vert_arrays = 0;
+  (void)(s); /* unused */
   /* if we receive no arguments, it means we'll be adding arrays vertically */
   if (argc == 0) {
     if (!x->x_arrays_ver_added) {
@@ -3015,6 +3023,7 @@ static void data_in_arrays(t_neuralnet *x, t_symbol *s, int argc, t_atom *argv)
   int i, j;
   t_word *vec;
   int array_size;
+  (void)(s); /* unused */
 
   if (argc != x->x_input_size) {
     pd_error(x, "number of test inputs MUST be equal to number of inputs in first layer");
@@ -3059,6 +3068,7 @@ static void data_out_arrays(t_neuralnet *x, t_symbol *s, int argc, t_atom *argv)
   int i, j, k;
   t_word *vec;
   int array_size;
+  (void)(s); /* unused */
 
   if (argc != x->x_output_size) {
     /* if we're in classification mode and the target values
@@ -3568,6 +3578,7 @@ static void init_object_variables(t_neuralnet *x)
 
 static void *neuralnet_new(t_symbol *s, int argc, t_atom *argv)
 {
+  (void)(s); /* unused */
   t_neuralnet *x = (t_neuralnet *)pd_new(neuralnet_class);
 
   /* set a random seed based on time */

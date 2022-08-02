@@ -452,12 +452,6 @@ the four corners of the monitor. A bang is sent out the outlet when
 done \, which also sends the "shuffle_train_set" to [neuralnet]. If
 you want to start this process from the beginning \, make sure to first
 click on "clear" below \, to clear the stored parameters;
-#X text 44 623 8) set a desired minimum accuracy if you want to be
-able to retraing the model without repeating the process in step 9
-;
-#X text 473 672 14) validate the network with 10% of the training data
-set. check the number atoms connected to the outlets of [neuralnet]
-to see if they change;
 #X text 474 775 15) start polling the mouse;
 #X text 941 143 16) turn the DSP on and turn up the volume in the slider
 to hear the results;
@@ -493,31 +487,21 @@ up in this setting. I also usually make sure the three parameters (carrier
 four groups (meaning that the carrier value of the first group is not
 close to the carrier value of any other group \, they should have some
 difference of more than 10).;
-#X text 43 216 While a largeer dataset (more iterations per group)
-produces a low loss \, the accuracy was hard to raise \, and was only
-raised when I made the training dataset smaller. You are free to experiment
+#X floatatom 44 355 5 0 0 0 - - - 0;
+#X msg 44 377 set_accuracy_denominator \$1;
+#X obj 44 400 s mouse_input_example;
+#X text 43 216 While a larger dataset (more iterations per group) produces
+a low loss \, the accuracy was hard to raise \, and was only raised
+when I made the training dataset smaller. You are free to experiment
 with different datasets to see if you can get better results. If you're
 fine with the results \, but the accuracy is still not satisfactory
 \, you can reduce the accuracy denominator with the message below \,
 which will make [neuralnet] more tolerant and will output a higher
 accuracy.;
-#X floatatom 44 355 5 0 0 0 - - - 0;
-#X msg 44 377 set_accuracy_denominator \$1;
-#X obj 44 400 s mouse_input_example;
+#X connect 1 0 2 0;
 #X connect 2 0 3 0;
-#X connect 3 0 4 0;
 #X restore 1191 921 pd some_notes;
 #X msg 533 618 keep_training;
-#X text 472 451 13) in case you have set a desired accuracy \, and
-the accuracy of [neuralnet] has not reached it \, the training dataset
-will not be erased from its memory. If you want to change some parameters
-and retrain the network \, first change any parameters you want \,
-and then send "retrain" to traing from scratch \, or "keep_training"
-to start over without resetting the weights and biases. Otherwise \,
-if you still want to move on with validating and making predictions
-\, send the "release_mem" message first. If you haven't set a desired
-accuracy \, don't send any of these messages \, as Pd will most likely
-crash;
 #X text 49 20 This example uses the mouse coordinates to control three
 parameters in a simple FM patch. It uses [mousestate] from the Cyclone
 library.;
@@ -555,6 +539,21 @@ first destroyed the network \, if you have already created one);
 #X connect 14 0 11 0;
 #X connect 15 0 5 0;
 #X restore 901 517 pd save_and_load;
+#X text 44 623 8) set a desired minimum accuracy if you want to be
+able to retrain the model without repeating the process in step 9;
+#X text 472 450 13) in case you have set a desired accuracy \, and
+the accuracy of [neuralnet] has not reached it \, the training dataset
+will not be erased from its memory. If you want to change some parameters
+and retrain the network \, first change any parameters you want \,
+and then send "retrain" to train from scratch \, or "keep_training"
+to start over without resetting the weights and biases. Otherwise \,
+if you still want to move on with validating and making predictions
+\, send the "release_mem" message first. If you haven't set a desired
+accuracy \, don't send any of these messages \, as Pd will most likely
+crash;
+#X text 473 672 14) validate the network with 10% of the training data
+set. check the number of atoms connected to the outlets of [neuralnet]
+to see if they change;
 #X connect 3 0 39 0;
 #X connect 4 0 39 0;
 #X connect 5 0 65 0;
@@ -616,8 +615,8 @@ first destroyed the network \, if you have already created one);
 #X connect 84 0 86 1;
 #X connect 85 0 31 0;
 #X connect 86 0 85 0;
-#X connect 98 0 79 0;
-#X connect 100 0 66 0;
-#X connect 101 0 67 0;
-#X connect 102 0 60 0;
-#X connect 104 0 79 0;
+#X connect 96 0 79 0;
+#X connect 98 0 66 0;
+#X connect 99 0 67 0;
+#X connect 100 0 60 0;
+#X connect 102 0 79 0;

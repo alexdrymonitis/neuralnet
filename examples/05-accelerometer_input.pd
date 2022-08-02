@@ -581,9 +581,6 @@ parameters;
 #X text 475 350 11) train the network. the argument is percentage of
 data to be used for validating. in this case we'll use 10% of the data
 to validate the model;
-#X text 473 660 13) validate the network with 10% of the training data
-set. check the number atoms connected to the outlets of [neuralnet]
-to see if they change;
 #X text 515 821 14) turn the DSP on and turn up the volume in the slider
 to hear the results;
 #X obj 901 12 r accel_vals;
@@ -624,12 +621,15 @@ Set the first two arguments to [clip] and the [map] abstraction accordingly
 the accuracy of [neuralnet] has not reached it \, the training dataset
 will not be erased from its memory. If you want to change some parameters
 and retrain the network \, first change any parameters you want \,
-and then send "retrain" to traing from scratch \, or "keep_training"
+and then send "retrain" to train from scratch \, or "keep_training"
 to start over without resetting the weights and biases. Otherwise \,
 if you still want to move on with validating and making predictions
 \, send the "release_mem" message first. If you haven't set a desired
 accuracy \, don't send any of these messages \, as Pd will most likely
 crash;
+#X text 473 660 13) validate the network with 10% of the training data
+set. check the number of atoms connected to the outlets of [neuralnet]
+to see if they change;
 #X connect 4 0 50 0;
 #X connect 5 0 50 0;
 #X connect 6 0 74 0;
@@ -643,7 +643,7 @@ crash;
 #X connect 16 0 62 0;
 #X connect 18 0 63 0;
 #X connect 20 0 64 0;
-#X connect 22 0 83 0;
+#X connect 22 0 82 0;
 #X connect 23 0 22 1;
 #X connect 24 0 61 0;
 #X connect 26 0 28 0;
@@ -673,14 +673,14 @@ crash;
 #X connect 53 4 57 0;
 #X connect 58 0 7 0;
 #X connect 59 0 44 0;
-#X connect 76 0 88 0;
-#X connect 82 0 22 0;
-#X connect 83 0 72 0;
-#X connect 88 0 53 0;
-#X connect 88 2 2 0;
-#X connect 88 4 1 0;
-#X connect 88 5 0 0;
-#X connect 91 0 67 0;
-#X connect 92 0 66 0;
-#X connect 93 0 65 0;
-#X connect 94 0 70 0;
+#X connect 76 0 87 0;
+#X connect 81 0 22 0;
+#X connect 82 0 72 0;
+#X connect 87 0 53 0;
+#X connect 87 2 2 0;
+#X connect 87 4 1 0;
+#X connect 87 5 0 0;
+#X connect 90 0 67 0;
+#X connect 91 0 66 0;
+#X connect 92 0 65 0;
+#X connect 93 0 70 0;

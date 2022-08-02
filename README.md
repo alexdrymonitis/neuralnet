@@ -6,7 +6,12 @@ Version 0.2
 [neuralnet] creates densely connected neural networks for classification, regression, and binary logistic regression. There are different activation functions and optimizers you can set, and various other settable parameters. The object's help patch and the examples found in the examples directory should cover all the necessary information.
 
 ## Note about Make
-This repository uses the pd-lib-builder Makefile system. You can get it from [here](https://github.com/pure-data/pd-lib-builder). The directory of the Makefile should be in the same directory of the neuralnet directory.
+This repository uses the pd-lib-builder Makefile system. You can get it from [here](https://github.com/pure-data/pd-lib-builder). The directory of the Makefile should be in the same directory of the neuralnet directory. For example, run:
+```
+cd ../
+git clone https://github.com/pure-data/pd-lib-builder.git
+cd -
+```
 
 ## Note about the examples
 Example 03-mouse_input.pd uses [mousestate] from the Cyclone library, to get the coordinates of the mouse.

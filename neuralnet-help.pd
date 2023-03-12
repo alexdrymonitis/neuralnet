@@ -308,7 +308,7 @@ Argument:;
 #X msg 679 522 set_accuracy_denominator \$1;
 #X text 869 519 Set the denominator to determine the accuracy threshold
 when in regression mode. This is defined by the standard deviation
-of the output training data \, divined by this number. Defaults to
+of the output training data \, divided by this number. Defaults to
 250;
 #X text 186 43 create a network. arguments:;
 #X text 186 92 \$3: if this is the last argument it is the number of

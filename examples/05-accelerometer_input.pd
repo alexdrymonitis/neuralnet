@@ -1,26 +1,42 @@
-#N canvas 73 30 1347 979 10;
+#N canvas 547 30 1347 979 10;
 #X floatatom 1012 736 10 0 0 1 loss - - 0;
 #X floatatom 989 759 10 0 0 1 accuracy - - 0;
 #X floatatom 945 782 8 0 0 1 epoch - - 0;
-#N canvas 719 482 591 316 save_and_load 0;
+#N canvas 692 248 591 490 save_and_load 0;
 #X listbox 50 57 20 0 0 0 - - - 0;
-#X listbox 50 167 20 0 0 0 - - - 0;
-#X msg 50 83 save models/\$1.ann;
+#X listbox 50 237 20 0 0 0 - - - 0;
 #X text 181 54 write a name for the model you want to save \, without
 file extension (default is .ann). it will be saved in the models subdirectory
 of this directory. otherwise \, set your own destination directory.
 ;
-#X msg 50 191 load models/\$1.ann;
-#X text 184 163 write the name of the model you want to load \, without
+#X text 184 233 write the name of the model you want to load \, without
 file extension \, saved in the models subdirectory. otherwise \, set
 your own directory to pull the model from.;
 #X obj 901 664 r mouse_input_example;
-#X obj 50 107 s mouse_input_example;
-#X obj 50 214 s mouse_input_example;
-#X connect 0 0 2 0;
-#X connect 1 0 4 0;
-#X connect 2 0 7 0;
-#X connect 4 0 8 0;
+#X obj 50 152 pack s s;
+#X msg 50 176 save \$2/models/\$1.ann;
+#X obj 95 83 loadbang;
+#X msg 95 106 dir;
+#X obj 95 129 pdcontrol;
+#X obj 50 332 pack s s;
+#X obj 95 263 loadbang;
+#X msg 95 286 dir;
+#X obj 95 309 pdcontrol;
+#X obj 50 200 s acc_input_example;
+#X obj 50 384 s acc_input_example;
+#X msg 50 361 load \$2/models/\$1.ann;
+#X connect 0 0 5 0;
+#X connect 1 0 10 0;
+#X connect 5 0 6 0;
+#X connect 6 0 14 0;
+#X connect 7 0 8 0;
+#X connect 8 0 9 0;
+#X connect 9 0 5 1;
+#X connect 10 0 16 0;
+#X connect 11 0 12 0;
+#X connect 12 0 13 0;
+#X connect 13 0 10 1;
+#X connect 16 0 15 0;
 #X restore 901 242 pd save_and_load;
 #X msg 46 861 poll;
 #X msg 88 861 nopoll;
@@ -581,6 +597,9 @@ parameters;
 #X text 475 350 11) train the network. the argument is percentage of
 data to be used for validating. in this case we'll use 10% of the data
 to validate the model;
+#X text 473 660 13) validate the network with 10% of the training data
+set. check the number atoms connected to the outlets of [neuralnet]
+to see if they change;
 #X text 515 821 14) turn the DSP on and turn up the volume in the slider
 to hear the results;
 #X obj 901 12 r accel_vals;
@@ -613,23 +632,20 @@ etc. for the x \, y \, and z values. The range can also vary. In my
 case the values are between -10 and 10 but other apps might differ.
 Set the first two arguments to [clip] and the [map] abstraction accordingly
 (same subpatch);
-#X msg 47 677 set_epochs 2000;
-#X msg 47 607 set_decay 0.0001;
 #X msg 47 538 set_learning_rate 0.03;
 #X msg 531 606 keep_training;
 #X text 472 451 12) in case you have set a desired accuracy \, and
 the accuracy of [neuralnet] has not reached it \, the training dataset
 will not be erased from its memory. If you want to change some parameters
 and retrain the network \, first change any parameters you want \,
-and then send "retrain" to train from scratch \, or "keep_training"
+and then send "retrain" to traing from scratch \, or "keep_training"
 to start over without resetting the weights and biases. Otherwise \,
 if you still want to move on with validating and making predictions
 \, send the "release_mem" message first. If you haven't set a desired
 accuracy \, don't send any of these messages \, as Pd will most likely
 crash;
-#X text 473 660 13) validate the network with 10% of the training data
-set. check the number of atoms connected to the outlets of [neuralnet]
-to see if they change;
+#X msg 47 607 set_decay 5e-05;
+#X msg 47 677 set_epochs 200;
 #X connect 4 0 50 0;
 #X connect 5 0 50 0;
 #X connect 6 0 74 0;
@@ -643,7 +659,7 @@ to see if they change;
 #X connect 16 0 62 0;
 #X connect 18 0 63 0;
 #X connect 20 0 64 0;
-#X connect 22 0 82 0;
+#X connect 22 0 83 0;
 #X connect 23 0 22 1;
 #X connect 24 0 61 0;
 #X connect 26 0 28 0;
@@ -673,14 +689,14 @@ to see if they change;
 #X connect 53 4 57 0;
 #X connect 58 0 7 0;
 #X connect 59 0 44 0;
-#X connect 76 0 87 0;
-#X connect 81 0 22 0;
-#X connect 82 0 72 0;
-#X connect 87 0 53 0;
-#X connect 87 2 2 0;
-#X connect 87 4 1 0;
-#X connect 87 5 0 0;
-#X connect 90 0 67 0;
-#X connect 91 0 66 0;
-#X connect 92 0 65 0;
-#X connect 93 0 70 0;
+#X connect 76 0 88 0;
+#X connect 82 0 22 0;
+#X connect 83 0 72 0;
+#X connect 88 0 53 0;
+#X connect 88 2 2 0;
+#X connect 88 4 1 0;
+#X connect 88 5 0 0;
+#X connect 91 0 65 0;
+#X connect 92 0 70 0;
+#X connect 94 0 66 0;
+#X connect 95 0 67 0;

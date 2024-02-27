@@ -20,6 +20,18 @@ Example 05-accelerometer_input.pd uses a mobile app to send accelerometer values
 
 All external objects used in the examples can be installed via the deken plugin (Help->Find externals).
 
+If you mention this object in an academic paper/chapter/article, please include it in your bibliography with the following citation:
+
+@article{Drymonitis2023neuralnet,
+	author = {Drymonitis, Alexandros},
+	journal = {AIMC 2023},
+	year = {2023},
+	month = {aug 29},
+	note = {https://aimc2023.pubpub.org/pub/3j3fx7y1},
+	publisher = {},
+	title = {[neuralnet]: A {Pure} {Data} {External} for the {Creation} of {Neural} {Networks} {Written} in {Pure} {C}},
+}
+
 Log:<br />
 -Fixes crash on Windows with the set_activation_function() message that took A_FLOAT and A_SYMBOL as arguments, which apparently in Windows is not possible.
 

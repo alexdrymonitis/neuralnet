@@ -22,15 +22,15 @@ All external objects used in the examples can be installed via the deken plugin 
 
 If you mention this object in an academic paper/chapter/article, please include it in your bibliography with the following citation:
 
-@article{Drymonitis2023neuralnet,
-	author = {Drymonitis, Alexandros},
-	journal = {AIMC 2023},
-	year = {2023},
+@article{Drymonitis2023neuralnet,<br />
+	author = {Drymonitis, Alexandros},<br/ >
+	journal = {AIMC 2023},<br/ >
+	year = {2023},<br />
 	month = {aug 29},
-	note = {https://aimc2023.pubpub.org/pub/3j3fx7y1},
-	publisher = {},
-	title = {[neuralnet]: A {Pure} {Data} {External} for the {Creation} of {Neural} {Networks} {Written} in {Pure} {C}},
-}
+	note = {https://aimc2023.pubpub.org/pub/3j3fx7y1},<br/ >
+	publisher = {},<br/ >
+	title = {[neuralnet]: A {Pure} {Data} {External} for the {Creation} of {Neural} {Networks} {Written} in {Pure} {C}},<br/ >
+}<br/ >
 
 Log:<br />
 -Fixes crash on Windows with the set_activation_function() message that took A_FLOAT and A_SYMBOL as arguments, which apparently in Windows is not possible.

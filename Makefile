@@ -2,9 +2,9 @@
 
 lib.name = neuralnet
 
-class.sources = neuralnet.c
+neuralnet.class.sources = src/neuralnet.c src/dense.c
 
-common.sources = dense.h dense.c
+cflags = -g -Wno-cast-function-type
 
 datafiles = neuralnet-help.pd README.md
 

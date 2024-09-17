@@ -1,0 +1,142 @@
+#N canvas 204 144 1004 710 10;
+#X obj 79 225 hsl 128 15 0 136 0 1 empty empty empty -2 -8 0 10 -262144
+-1 -1 10300 1;
+#X obj 130 292 + 100;
+#X obj 130 316 dbtorms;
+#X msg 76 417 \$1 100;
+#X obj 76 441 line~;
+#X msg 130 417 \$1 100;
+#X obj 130 441 line~;
+#X floatatom 130 345 5 0 0 0 - - -, f 5;
+#X text 180 337 Q - refers to resonance for lowpass \, highpass \,
+and resonant. Refers to bandwidth for bandpass \, notch \, peaking
+\, and allpass. Refers to slope for highshelf and lowshelf.;
+#X text 194 256 The gain of the resonance is equal to Q. By convention
+\, -3dB means no resonance for lowpass and highpass.;
+#X obj 130 263 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -8 0 10
+-262144 -1 -1 -3 256;
+#X obj 185 395 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X text 248 394 Gain (in dB) for peaking \, lowshelf \, and highshelf
+;
+#X obj 76 246 mtof;
+#X msg 185 417 \$1 100;
+#X obj 185 441 line~;
+#X obj 37 183 noise~;
+#X obj 25 16 cnv 15 400 60 empty empty empty 20 12 0 14 -191765 -66577
+0;
+#X text 33 23 [omniFilter_abs~]: vanilla abstraction which packs the
+[filtercoeff.mmb~] and [biquad.mmb~] abstractions by Mike-Moser Booth
+\, into one package.;
+#X obj 37 519 *~ 0.2;
+#X obj 37 550 dac~;
+#X msg 631 287 lowpass;
+#X msg 631 307 highpass;
+#X msg 631 367 lowshelf;
+#X msg 631 407 highshelf;
+#X msg 631 327 bandpass;
+#X msg 631 428 resonant;
+#X msg 631 347 allpass;
+#X text 627 266 filter types;
+#X obj 631 469 t a;
+#X text 75 206 frequency;
+#X text 545 32 Arguments: filter type (default is lowpass);
+#X text 544 55 Inlets:;
+#X text 585 78 1st (signal): signal to be filtered;
+#X text 585 93 2nd (signal): filter frequency;
+#X text 585 123 4th (signal): Gain \, see comment next to number atom
+;
+#X text 585 139 5th (cotrol): filter type;
+#X text 550 166 Outlet: filtered signal;
+#X text 30 122 The comments next to the slider and number atoms below
+are copied from the help patch of the [filtercoeff.mmb~] abstraction.
+;
+#X text 712 652 Put together by Alexandros Drymonitis;
+#N canvas 1 82 775 444 scope 0;
+#N canvas 0 50 450 278 (subpatch) 0;
+#X array scope 1024 float 0;
+#X coords 0 1 1023 0 200 140 2 0 0;
+#X restore 100 100 graph;
+#X obj 346 99 inlet~;
+#X obj 479 200 loadbang;
+#X obj 346 170 rfft~;
+#X obj 346 203 *~;
+#X obj 378 203 *~;
+#X obj 346 232 sqrt~;
+#X obj 346 255 biquad~ 0 0 0 0 1;
+#X obj 346 340 tabwrite~ scope;
+#X obj 479 222 t b b;
+#X obj 479 266 pow -1;
+#X obj 346 147 *~;
+#X obj 397 20 loadbang;
+#X obj 397 42 samplerate~;
+#X obj 397 64 / 1024;
+#X obj 572 104 block~ 2048 4;
+#X obj 397 86 osc~;
+#X obj 481 47 bang~;
+#X obj 481 69 0.5;
+#X obj 397 108 *~ 0.5;
+#X obj 397 130 +~ 0.5;
+#X obj 511 293 metro 250;
+#X obj 346 283 *~ 1;
+#X msg 479 244 64;
+#X connect 1 0 11 0;
+#X connect 2 0 9 0;
+#X connect 3 0 4 0;
+#X connect 3 0 4 1;
+#X connect 3 1 5 0;
+#X connect 3 1 5 1;
+#X connect 4 0 6 0;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 7 0 22 0;
+#X connect 9 0 23 0;
+#X connect 9 1 21 0;
+#X connect 10 0 22 1;
+#X connect 11 0 3 0;
+#X connect 12 0 13 0;
+#X connect 13 0 14 0;
+#X connect 14 0 16 0;
+#X connect 16 0 19 0;
+#X connect 17 0 18 0;
+#X connect 18 0 16 1;
+#X connect 19 0 20 0;
+#X connect 20 0 11 1;
+#X connect 21 0 8 0;
+#X connect 22 0 8 0;
+#X connect 23 0 10 0;
+#X coords 0 -1 1 1 200 140 2 100 100;
+#X restore 84 542 pd scope;
+#X msg 631 387 peaknotch;
+#X obj 37 486 omniFilter_abs~ lowpass;
+#X text 31 88 This abstraction omits the use of [expr~] completely
+using only native Pd-vanilla objects;
+#X text 585 107 3rd (signal): Q \, see comments next to number atom
+;
+#X connect 0 0 13 0;
+#X connect 1 0 2 0;
+#X connect 2 0 7 0;
+#X connect 3 0 4 0;
+#X connect 4 0 42 1;
+#X connect 5 0 6 0;
+#X connect 6 0 42 2;
+#X connect 7 0 5 0;
+#X connect 10 0 1 0;
+#X connect 11 0 14 0;
+#X connect 13 0 3 0;
+#X connect 14 0 15 0;
+#X connect 15 0 42 3;
+#X connect 16 0 42 0;
+#X connect 19 0 20 0;
+#X connect 19 0 20 1;
+#X connect 21 0 29 0;
+#X connect 22 0 29 0;
+#X connect 23 0 29 0;
+#X connect 24 0 29 0;
+#X connect 25 0 29 0;
+#X connect 26 0 29 0;
+#X connect 27 0 29 0;
+#X connect 29 0 42 4;
+#X connect 41 0 29 0;
+#X connect 42 0 19 0;
+#X connect 42 0 40 0;

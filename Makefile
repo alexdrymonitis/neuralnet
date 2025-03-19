@@ -2,7 +2,7 @@
 
 lib.name = neuralnet
 
-neuralnet.class.sources = src/neuralnet.c src/dense.c
+neuralnet.class.sources = src/neuralnet.c
 
 cflags = -g -Wno-cast-function-type
 

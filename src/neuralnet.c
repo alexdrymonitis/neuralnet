@@ -4323,7 +4323,7 @@ static void store_audio_training_sample(t_neuralnet *x, t_sample *audio_data, t_
 			realloc_transposed_input(x);
 			realloc_target(x);
 		}
-		//get_list_data(x, train_data, 0);
+		get_list_data(x, train_data, 0);
 	}
 }
 
